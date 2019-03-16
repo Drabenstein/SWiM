@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Zadanie1</string>
+    <string name="text1">Witaj Marcin Drabek!</string>
+    <string name="button1">Przycisk 1</string>
+    <string name="button2">Przycisk 2</string>
+    <string name="pressLonger">przyciśnij mnie dłużej...</string>
+    <string name="thirdActivityBack">Aby cofnąć użyj paska tytułu lub przycisku Powrót</string>
+    <string name="back">Powrót</string>
+    <string name="thirdActivityBtn">Activity 3</string>
+</resources>
