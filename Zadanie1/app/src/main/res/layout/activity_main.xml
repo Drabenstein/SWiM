@@ -15,28 +15,38 @@
         android:textSize="24sp" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/activity2btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
-        android:text="@string/button1" />
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="5sp"
+        android:text="@string/activity2pl" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_marginTop="10dp"
+        android:id="@+id/activity3btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10sp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/button2"
-        android:onClick="startSecondActivity"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/thirdActivityBtn"
+        android:text="@string/activity3pl"
         android:onClick="startThirdActivity"/>
+
+    <Switch
+        android:id="@+id/languageSwitch"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:showText="true"
+        android:textOn="@string/eng"
+        android:textOff="@string/pol"/>
+    
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/nosacz_u_mnie_dziala"
+        android:alpha="1.0"
+        android:longClickable="true" />
 
 </LinearLayout>

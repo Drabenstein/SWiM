@@ -1,17 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
+
+    <TableLayout
+        android:id="@+id/personalDataForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TableRow>
+
+            <TextView
+                android:padding="10dp"
+                android:text="@string/name" />
+
+            <EditText
+                android:id="@+id/nameEdit"
+                android:width="200sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:padding="10dp"
+                android:text="@string/surname" />
+
+            <EditText
+                android:id="@+id/surnameEdit"
+                android:width="200sp" />
+        </TableRow>
+    </TableLayout>
+
+    <GridLayout
+        android:id="@+id/sexChooseGrid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/personalDataForm">
+
+        <RadioGroup
+            android:id="@+id/radioSex"
+            android:layout_row="0"
+            android:layout_columnSpan="10"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/male" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/female" />
+        </RadioGroup>
+    </GridLayout>
 
     <TextView
-        android:id="@+id/text"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/pressLonger" />
+        android:id="@+id/progLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sexChooseGrid"
+        android:text="@string/programmingLanguages"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"/>
 
-</LinearLayout>
+    <CheckBox
+        android:id="@+id/javaCheckBox"
+        android:layout_below="@id/progLang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/java"
+        android:layout_centerHorizontal="true"/>
+
+    <CheckBox
+        android:id="@+id/kotlinCheckBox"
+        android:layout_below="@id/javaCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/kotlin"
+        android:layout_centerHorizontal="true"/>
+
+    <CheckBox
+        android:id="@+id/csharpCheckBox"
+        android:layout_below="@id/kotlinCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/csharp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/csharpCheckBox"
+        android:layout_centerHorizontal="true"
+        android:text="@string/submit"
+        android:onClick="SubmitButtonClicked"/>
+
+    <TextView
+        android:id="@+id/resultView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="50sp"/>
+</RelativeLayout>

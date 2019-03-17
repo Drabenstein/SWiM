@@ -18,8 +18,11 @@
             android:theme="@style/MyThemeHolo" >
         </activity>
         <activity android:name=".SecondActivity"
+            android:label="Aktywność 2"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyThemeDeviceDefault" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
