@@ -25,7 +25,6 @@ public class SecondActivity extends Activity {
         EditText nameView = findViewById(R.id.nameEdit);
         EditText surnameView = findViewById(R.id.surnameEdit);
         RadioGroup sexRadioGroup = findViewById(R.id.radioSex);
-        RadioButton sexRadioBtn = findViewById(sexRadioGroup.getCheckedRadioButtonId());
         CheckBox javaCheckbox = findViewById(R.id.javaCheckBox);
         CheckBox kotlinCheckbox = findViewById(R.id.kotlinCheckBox);
         CheckBox csharpCheckbox = findViewById(R.id.csharpCheckBox);
@@ -35,8 +34,12 @@ public class SecondActivity extends Activity {
         result.append(" ");
         result.append(surnameView.getText());
         result.append("\n");
-        result.append(sexRadioBtn.getText());
-        result.append("\n");
+        int selectedSexRadioBtnId = sexRadioGroup.getCheckedRadioButtonId();
+        if(selectedSexRadioBtnId != -1) {
+            RadioButton sexRadioBtn = findViewById(selectedSexRadioBtnId);
+            result.append(sexRadioBtn.getText());
+            result.append("\n");
+        }
         result.append("Znane języki: \n");
 
         if(javaCheckbox.isChecked())
