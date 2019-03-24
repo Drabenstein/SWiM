@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Zadanie2</string>
+    <string name="simple_list">Lista prosta</string>
+    <string name="multichoice_list">Lista multichoice</string>
+    <string name="gridView">Grid view</string>
+    <string name="list3">Lista 3</string>
+</resources>
