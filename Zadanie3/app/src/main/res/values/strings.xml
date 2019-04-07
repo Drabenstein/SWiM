@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Zadanie3</string>
+    <string name="addItem">Dodaj wpis</string>
+    <string name="phones">Smartfony</string>
+    <string name="dictionary">Słownik</string>
+    <string name="emoticons">Emotikony</string>
+    <string name="reset">Resetuj</string>
+    <string name="saveChanges">Zmiany zapisywane</string>
+    <string name="discardChanges">Zmiany odrzucane</string>
+
+    <string-array name="phonesTitles">
+        <item>Nokia 5.1 Plus</item>
+        <item>Nokia 8</item>
+        <item>Sony Xperia 10</item>
+        <item>Huawei P10 Lite</item>
+        <item>Huawei P8 Lite</item>
+        <item>Samsung Galaxy S10+</item>
+    </string-array>
+
+    <string-array name="phonesDescriptions">
+        <item>5,8\" | HD+ | 3 GB RAM |\n 32 GB | 13 Mpix</item>
+        <item>6,18\" | Full HD+ | 4 GB RAM |\n 64 GB | 2x12 Mpix</item>
+        <item>6\" | Full HD+ | 3 GB RAM |\n 64 GB | 13 Mpix</item>
+        <item>5,2\" | Full HD | 3GB RAM |\n 32 GB | 12 Mpix</item>
+        <item>5\" | HD | 2 GB RAM |\n 16 GB | 13 Mpix</item>
+        <item>6,4\" | Quad HD+ | 8 GB RAM |\n 128 GB | 2x12 + 16 Mpix</item>
+    </string-array>
+</resources>
