@@ -35,45 +35,47 @@ public class PhonesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phones);
         SharedPreferences sp = getSharedPreferences("phones", MODE_PRIVATE);
-        String titlesString = sp.getString("titles", null);
-        String descriptionString = sp.getString("descriptions", null);
-        String imagesIdsString = sp.getString("imagesIds", null);
+
+        boolean isEmpty = sp.getBoolean("list_empty", false);
         ToggleButton syncToggleButton = findViewById(R.id.syncToggleButton);
 
-        if(titlesString != null && descriptionString != null && imagesIdsString != null)
-        {
-            String[] titles = titlesString.split(";;");
-            String[] descriptions = descriptionString.split(";;");
-            String[] imagesIdsText = imagesIdsString.split(";");
-            Integer[] imagesIds = new Integer[imagesIdsText.length];
-            for(int i = 0; i < imagesIdsText.length; i++)
-            {
-                imagesIds[i] = Integer.parseInt(imagesIdsText[i]);
-            }
-
-            ArrayList<String> titlesList = new ArrayList<>(Arrays.asList(titles));
-            ArrayList<String> descriptionList = new ArrayList<>(Arrays.asList(descriptions));
-            ArrayList<Integer> imagesIdsList = new ArrayList<>(Arrays.asList(imagesIds));
-
+        if (isEmpty) {
             syncToggleButton.setChecked(true);
-            updateAdapterData(titlesList, descriptionList, imagesIdsList);
-        }
-        else
-        {
-            syncToggleButton.setChecked(false);
-            resetAdapterData();
+            updateAdapterData(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        } else {
+            String titlesString = sp.getString("titles", null);
+            String descriptionString = sp.getString("descriptions", null);
+            String imagesIdsString = sp.getString("imagesIds", null);
+
+            if (titlesString != null && descriptionString != null && imagesIdsString != null) {
+                String[] titles = titlesString.split(";;");
+                String[] descriptions = descriptionString.split(";;");
+                String[] imagesIdsText = imagesIdsString.split(";");
+                Integer[] imagesIds = new Integer[imagesIdsText.length];
+                for (int i = 0; i < imagesIdsText.length; i++) {
+                    imagesIds[i] = Integer.parseInt(imagesIdsText[i]);
+                }
+
+                ArrayList<String> titlesList = new ArrayList<>(Arrays.asList(titles));
+                ArrayList<String> descriptionList = new ArrayList<>(Arrays.asList(descriptions));
+                ArrayList<Integer> imagesIdsList = new ArrayList<>(Arrays.asList(imagesIds));
+
+                syncToggleButton.setChecked(true);
+                updateAdapterData(titlesList, descriptionList, imagesIdsList);
+            } else {
+                syncToggleButton.setChecked(false);
+                resetAdapterData();
+            }
         }
     }
 
-    private void updateAdapterData(List<String> titles, List<String> description, List<Integer> imagesIds)
-    {
+    private void updateAdapterData(List<String> titles, List<String> description, List<Integer> imagesIds) {
         CustomAdapter adapter = new CustomAdapter(titles, description, imagesIds);
         ListView listView = findViewById(R.id.phonesListView);
         listView.setAdapter(adapter);
     }
 
-    private void resetAdapterData()
-    {
+    private void resetAdapterData() {
         String[] titles = getResources().getStringArray(R.array.phonesTitles);
         String[] descriptions = getResources().getStringArray(R.array.phonesDescriptions);
         Integer[] imagesIds = new Integer[]
@@ -91,70 +93,71 @@ public class PhonesActivity extends Activity {
     protected void onPause() {
         ToggleButton spToggleBtn = findViewById(R.id.syncToggleButton);
 
-        if(spToggleBtn.isChecked())
-        {
+        if (spToggleBtn.isChecked()) {
             SharedPreferences sp = getSharedPreferences("phones", MODE_PRIVATE);
             SharedPreferences.Editor spe = sp.edit();
             spe.clear();
             ListView listView = findViewById(R.id.phonesListView);
-            CustomAdapter adapter = (CustomAdapter)listView.getAdapter();
-            StringBuilder titlesString = new StringBuilder();
+            CustomAdapter adapter = (CustomAdapter) listView.getAdapter();
 
-            for (String title : adapter.titles) {
-                titlesString.append(title);
-                titlesString.append(";;");
+            if (adapter.titles.size() == 0) {
+                spe.putBoolean("list_empty", true);
+            } else {
+                StringBuilder titlesString = new StringBuilder();
+
+                for (String title : adapter.titles) {
+                    titlesString.append(title);
+                    titlesString.append(";;");
+                }
+
+                titlesString.deleteCharAt(titlesString.length() - 1);
+                titlesString.deleteCharAt(titlesString.length() - 1);
+
+                StringBuilder descriptionString = new StringBuilder();
+
+                for (String description : adapter.descriptions) {
+                    descriptionString.append(description);
+                    descriptionString.append(";;");
+                }
+
+                descriptionString.deleteCharAt(descriptionString.length() - 1);
+                descriptionString.deleteCharAt(descriptionString.length() - 1);
+
+                spe.putString("titles", titlesString.toString());
+                spe.putString("descriptions", descriptionString.toString());
+
+                StringBuilder sb = new StringBuilder();
+
+                for (Integer i : adapter.imagesIds) {
+                    sb.append(i + ";");
+                }
+
+                sb.deleteCharAt(sb.length() - 1);
+
+                spe.putString("imagesIds", sb.toString());
             }
 
-            titlesString.deleteCharAt(titlesString.length() - 1);
-            titlesString.deleteCharAt(titlesString.length() - 1);
-
-            StringBuilder descriptionString = new StringBuilder();
-
-            for (String description : adapter.descriptions) {
-                descriptionString.append(description);
-                descriptionString.append(";;");
-            }
-
-            descriptionString.deleteCharAt(titlesString.length() - 1);
-            descriptionString.deleteCharAt(titlesString.length() - 1);
-
-            spe.putString("titles", titlesString.toString());
-            spe.putString("descriptions", descriptionString.toString());
-
-            StringBuilder sb = new StringBuilder();
-
-            for (Integer i : adapter.imagesIds)
-            {
-                sb.append(i + ";");
-            }
-
-            sb.deleteCharAt(sb.length() - 1);
-
-            spe.putString("imagesIds", sb.toString());
             spe.commit();
         }
 
         super.onPause();
     }
 
-    public void onResetButttonClicked(View view)
-    {
+    public void onResetButttonClicked(View view) {
         resetAdapterData();
     }
 
-    private class CustomAdapter extends BaseAdapter
-    {
+    private class CustomAdapter extends BaseAdapter {
         List<String> titles;
         List<String> descriptions;
         List<Integer> imagesIds;
         private LayoutInflater inflater;
 
-        public CustomAdapter(List<String> titles, List<String> descriptions, List<Integer> imagesIds)
-        {
+        public CustomAdapter(List<String> titles, List<String> descriptions, List<Integer> imagesIds) {
             this.titles = titles;
             this.descriptions = descriptions;
             this.imagesIds = imagesIds;
-            inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
@@ -176,8 +179,7 @@ public class PhonesActivity extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             LVItemHolder lvItem;
 
-            if(convertView == null)
-            {
+            if (convertView == null) {
                 convertView = inflater.inflate(R.layout.custom_phone_list_item, null);
                 lvItem = new LVItemHolder();
                 lvItem.listItemTitle = convertView.findViewById(R.id.listItemTitle);
@@ -194,10 +196,8 @@ public class PhonesActivity extends Activity {
                     notifyDataSetChanged();
                 });
                 convertView.setTag(lvItem);
-            }
-            else
-            {
-                lvItem = (LVItemHolder)convertView.getTag();
+            } else {
+                lvItem = (LVItemHolder) convertView.getTag();
             }
 
             lvItem.listItemTitle.setText(titles.get(position));
@@ -211,11 +211,9 @@ public class PhonesActivity extends Activity {
                     Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
                     intent.putExtra(SearchManager.QUERY, query); // query contains search string
                     startActivity(intent);
-                }
-                catch(ActivityNotFoundException ex)
-                {
+                } catch (ActivityNotFoundException ex) {
                     Toast toast = Toast.makeText(getApplicationContext(), ex.getLocalizedMessage(), Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.TOP, 0,0);
+                    toast.setGravity(Gravity.TOP, 0, 0);
                     toast.show();
                 }
             });
@@ -223,8 +221,7 @@ public class PhonesActivity extends Activity {
             return convertView;
         }
 
-        private class LVItemHolder
-        {
+        private class LVItemHolder {
             ImageView listItemImage;
             TextView listItemTitle;
             TextView listItemDescription;
