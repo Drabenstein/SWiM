@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Zadanie3</string>
+    <string name="addingItem">Dodawanie nowego elementu</string>
+    <string name="clearList">Wyczyść</string>
+    <string name="todoList">Lista rzeczy do zrobienia</string>
     <string name="addItem">Dodaj wpis</string>
     <string name="phones">Smartfony</string>
     <string name="dictionary">Słownik</string>

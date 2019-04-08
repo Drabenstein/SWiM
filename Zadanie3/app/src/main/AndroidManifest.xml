@@ -9,19 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GridViewActivity"></activity>
-        <activity android:name=".ListActivity" >
+        <activity android:name=".AddItemActivity">
             <intent-filter>
                 <action android:name="android.intent.action.INSERT" />
-                <category android:name="android.intent.category.SELECTED_ALTERNATIVE"/>
-                <data android:mimeType="text/plain"/>
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".GridViewActivity" />
+        <activity android:name=".ListActivity"/>
         <activity android:name=".PhonesActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
