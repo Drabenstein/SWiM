@@ -6,17 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:gravity="center_horizontal"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="center"
     android:orientation="vertical">
 
+    <Spinner
+        android:id="@+id/optionsSpinner"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="80dp"/>
 
-
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <Button
+        android:text="@string/runActivity"
+        android:textSize="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:onClick="onRunActivityButtonClicked"/>
 
     <Switch
+        android:text="@string/godMode"
+        android:layout_marginTop="20dp"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:onClick="onGodModeSwitchActivated"/>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:id="@+id/godModeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:text="@string/clearTodosFile"
+            android:layout_height="wrap_content"
+            android:onClick="onResetTodosFileButtonClicked"/>
+
+        <TextView
+            android:id="@+id/counterTextView"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="22dp"/>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:min="0"
+            android:max="100"/>
+    </LinearLayout>
     
 </LinearLayout>

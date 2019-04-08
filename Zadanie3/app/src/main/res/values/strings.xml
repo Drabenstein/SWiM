@@ -4,6 +4,9 @@
     <string name="clearList">Wyczyść</string>
     <string name="todoList">Lista rzeczy do zrobienia</string>
     <string name="addItem">Dodaj wpis</string>
+    <string name="runActivity">Przejdź</string>
+    <string name="godMode">God Mode</string>
+    <string name="clearTodosFile">Wyczyść plik todo</string>
     <string name="phones">Smartfony</string>
     <string name="dictionary">Słownik</string>
     <string name="emoticons">Emotikony</string>
