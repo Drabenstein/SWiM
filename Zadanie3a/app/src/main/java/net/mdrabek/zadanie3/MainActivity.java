@@ -24,4 +24,10 @@ public class MainActivity extends AppCompatActivity {
         final Intent javaBasedMenuActivityIntent = new Intent(this, JavaBasedMenuActivity.class);
         startActivity(javaBasedMenuActivityIntent);
     }
+
+    public void onContextMenuButtonClick(View view)
+    {
+        final Intent contextMenuActivityIntent = new Intent(this, ContextMenuActivity.class);
+        startActivity(contextMenuActivityIntent);
+    }
 }
