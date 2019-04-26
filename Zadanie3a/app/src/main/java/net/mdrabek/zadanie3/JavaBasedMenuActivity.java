@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class JavaBasedMenuActivity extends AppCompatActivity {
 
@@ -21,21 +22,25 @@ public class JavaBasedMenuActivity extends AppCompatActivity {
         MenuItem airplane = menu.add(R.string.menuItemAirplane);
 
         final ImageView vehicleImageView = findViewById(R.id.vehicleImageView);
+        final TextView vehicleTextView = findViewById(R.id.vehicleTextView);
 
         car.setOnMenuItemClickListener(v ->
         {
-            vehicleImageView.setImageResource(R.drawable.ic_directions_car_light_green_a400_24dp);
+            vehicleTextView.setText("Car");
+            vehicleImageView.setImageResource(R.drawable.ic_directions_car_lime_100_48dp);
             return true;
         });
 
         train.setOnMenuItemClickListener(v ->
         {
-            vehicleImageView.setImageResource(R.drawable.ic_train_yellow_500_24dp);
+            vehicleTextView.setText("Train");
+            vehicleImageView.setImageResource(R.drawable.ic_train_yellow_500_48dp);
             return true;
         });
 
         airplane.setOnMenuItemClickListener(v ->
         {
+            vehicleTextView.setText("Airplane");
             vehicleImageView.setImageResource(R.drawable.ic_airplanemode_active_light_green_a200_48dp);
             return true;
         });

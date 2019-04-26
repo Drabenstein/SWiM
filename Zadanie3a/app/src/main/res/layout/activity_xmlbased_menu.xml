@@ -9,6 +9,7 @@
     <TextView
         android:id="@+id/outputTextView"
         android:text="@string/sampleText"
+        android:textColor="#ffffff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25dp"
