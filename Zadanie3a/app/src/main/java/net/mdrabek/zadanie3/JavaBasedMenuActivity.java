@@ -4,7 +4,6 @@ import android.graphics.Rect;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-//import android.support.v7.view.ActionMode;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;

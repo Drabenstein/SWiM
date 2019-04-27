@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ContextMenuActivity"></activity>
+        <activity android:name=".CheckableContextMenuActivity"></activity>
+        <activity android:name=".ContextMenuActivity" />
         <activity android:name=".JavaBasedMenuActivity" />
         <activity android:name=".XMLBasedMenuActivity" />
         <activity android:name=".MainActivity">

@@ -30,4 +30,10 @@ public class MainActivity extends AppCompatActivity {
         final Intent contextMenuActivityIntent = new Intent(this, ContextMenuActivity.class);
         startActivity(contextMenuActivityIntent);
     }
+
+    public void onCheckableContextMenuButtonClick(View view)
+    {
+        final Intent checkableContextMenuActivityIntent = new Intent(this, CheckableContextMenuActivity.class);
+        startActivity(checkableContextMenuActivityIntent);
+    }
 }

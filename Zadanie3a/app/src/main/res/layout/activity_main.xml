@@ -39,6 +39,18 @@
         app:layout_constraintTop_toBottomOf="@id/javaBasedMenu"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/checkableContextMenuButton"
+        />
+
+    <Button
+        android:id="@+id/checkableContextMenuButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/checkableContextMenuButton"
+        android:onClick="onCheckableContextMenuButtonClick"
+        app:layout_constraintTop_toBottomOf="@id/contextMenuButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 

@@ -7,9 +7,18 @@
     <string name="sampleText">Sample text</string>
     <string name="javaBasedMenu">Java-based menu</string>
     <string name="contextMenuButton">Context menu</string>
+    <string name="checkableContextMenuButton">Checkable context menu</string>
     <string name="loremIpsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem. Etiam pellentesque aliquet tellus. Phasellus pharetra nulla ac diam. Quisque semper justo at risus. Donec venenatis, turpis vel hendrerit interdum, dui ligula ultricies purus, sed posuere libero dui id orci. Nam congue, pede vitae dapibus aliquet, elit magna vulputate arcu, vel tempus metus leo non est. Etiam sit amet lectus quis est congue mollis. Phasellus congue lacus eget neque. Phasellus ornare, ante vitae consectetuer consequat, purus sapien ultricies dolor, et mollis pede metus eget nisi. Praesent sodales velit quis augue. Cras suscipit, urna at aliquam rhoncus, urna quam viverra nisi, in interdum massa nibh nec erat.</string>
 
     <string name="menuItemCar">Change to car</string>
     <string name="menuItemTrain">Change to train</string>
     <string name="menuItemAirplane">Change to airplane</string>
+
+    <string name="redText">Red text</string>
+    <string name="limeText">Lime text</string>
+    <string name="whiteText">White text</string>
+
+    <string name="smallFont">Small font</string>
+    <string name="normalFont">Normal font</string>
+    <string name="largeFont">Large font</string>
 </resources>
