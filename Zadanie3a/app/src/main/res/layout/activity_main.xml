@@ -7,8 +7,10 @@
     tools:context=".MainActivity">
 
     <Button
+        android:background="@drawable/rounded_button"
         android:id="@+id/xmlBasedMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.5"
         android:layout_height="wrap_content"
         android:onClick="onXMLBasedMenuButtonClick"
         android:text="@string/xmlBasedMenu"
@@ -18,8 +20,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:background="@drawable/rounded_button"
         android:id="@+id/javaBasedMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.5"
         android:layout_height="wrap_content"
         android:onClick="onJavaBasedMenuButtonClick"
         android:text="@string/javaBasedMenu"
@@ -29,8 +33,10 @@
         app:layout_constraintTop_toBottomOf="@id/xmlBasedMenuButton" />
 
     <Button
+        android:background="@drawable/rounded_button"
         android:id="@+id/contextMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.5"
         android:layout_height="wrap_content"
         android:onClick="onContextMenuButtonClick"
         android:text="@string/contextMenuButton"
@@ -40,8 +46,10 @@
         app:layout_constraintTop_toBottomOf="@id/javaBasedMenuButton" />
 
     <Button
+        android:background="@drawable/rounded_button"
         android:id="@+id/checkableContextMenuButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.5"
         android:layout_height="wrap_content"
         android:onClick="onCheckableContextMenuButtonClick"
         android:text="@string/checkableContextMenuButton"
@@ -51,7 +59,8 @@
         app:layout_constraintTop_toBottomOf="@id/contextMenuButton" />
 
     <android.support.design.widget.BottomNavigationView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="1"
         android:layout_height="wrap_content"
         android:id="@+id/bottomNavigation"
         app:itemBackground="@color/colorPrimary"
