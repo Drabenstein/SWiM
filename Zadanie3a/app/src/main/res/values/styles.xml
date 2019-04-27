@@ -7,6 +7,13 @@
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="windowActionModeOverlay">true</item>
+    </style>
+
+    <style name="ActionModeTheme" parent="AppTheme">
+        <item name="actionModeStyle">@style/AppTheme</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionMenuTextColor">#ffffff</item>
     </style>
 
     <style name="changedFont">
