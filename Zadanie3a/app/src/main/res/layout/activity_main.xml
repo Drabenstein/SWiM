@@ -7,51 +7,60 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/xmlBasedMenu"
+        android:id="@+id/xmlBasedMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/xmlBasedMenu"
         android:onClick="onXMLBasedMenuButtonClick"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/xmlBasedMenu"
+        app:layout_constraintBottom_toTopOf="@id/javaBasedMenuButton"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/javaBasedMenu"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/javaBasedMenu"
+        android:id="@+id/javaBasedMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/javaBasedMenu"
         android:onClick="onJavaBasedMenuButtonClick"
-        app:layout_constraintTop_toBottomOf="@id/xmlBasedMenu"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/javaBasedMenu"
         app:layout_constraintBottom_toTopOf="@id/contextMenuButton"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/xmlBasedMenuButton" />
 
     <Button
         android:id="@+id/contextMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/contextMenuButton"
         android:onClick="onContextMenuButtonClick"
-        app:layout_constraintTop_toBottomOf="@id/javaBasedMenu"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/contextMenuButton"
         app:layout_constraintBottom_toTopOf="@id/checkableContextMenuButton"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/javaBasedMenuButton" />
 
     <Button
         android:id="@+id/checkableContextMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/checkableContextMenuButton"
         android:onClick="onCheckableContextMenuButtonClick"
-        app:layout_constraintTop_toBottomOf="@id/contextMenuButton"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/checkableContextMenuButton"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contextMenuButton" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomNavigation"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:menu="@menu/nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         />
 
 </android.support.constraint.ConstraintLayout>

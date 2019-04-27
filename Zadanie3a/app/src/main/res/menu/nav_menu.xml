@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navXmlMenu"
+        android:icon="@drawable/ic_line_style_white_24dp"
+        android:title="XML" />
+    <item
+        android:id="@+id/navJavaMenu"
+        android:icon="@drawable/ic_line_weight_white_24dp"
+        android:title="Java" />
+    <item
+        android:id="@+id/navContextMenu"
+        android:icon="@drawable/ic_report_problem_white_24dp"
+        android:title="Context" />
+    <item
+        android:id="@+id/navCheckableContextMenu"
+        android:icon="@drawable/ic_delete_forever_white_24dp"
+        android:title="Checkable" />
+</menu>
