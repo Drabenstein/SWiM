@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
-    <fragment
-        android:id="@+id/gameFragment"
+    <FrameLayout
+        android:id="@+id/gameFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

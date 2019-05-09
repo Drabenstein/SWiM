@@ -1,4 +1,4 @@
-package net.mdrabek.punsgame;
+package net.mdrabek.punsgame.Fragments;
 
 import android.view.View;
 

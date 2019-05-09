@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuestionFragment"
+    tools:context=".Fragments.QuestionFragment"
     android:background="@color/lightBlue"
-    style="@style/GameTheme"
     android:id="@+id/questionFrameLayout">
 
     <TextView
@@ -17,5 +16,15 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:text="Dłuższe hasło do zgadnięcia" />
+
+    <TextView
+        android:id="@+id/questionTimerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TimerStyle"
+        android:text="1:28"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"/>
 
 </FrameLayout>
