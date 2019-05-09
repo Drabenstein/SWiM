@@ -1,5 +1,6 @@
 package net.mdrabek.punsgame;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,10 +14,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener
+import net.mdrabek.punsgame.Sensors.ShakeDetector;
+
+public class MainActivity extends AppCompatActivity implements ShakeDetector.OnShakeListener
 {
+    public static final int START_GAME_REQ = 31231;
+
     private SensorManager sensorManager;
     private Sensor linearAccelerometer;
+    private ShakeDetector shakeDetector;
+    private long questionRandomSeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         linearAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        sensorManager.registerListener(this, linearAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        shakeDetector = new ShakeDetector(this);
+        sensorManager.registerListener(shakeDetector, linearAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     public void changeOrientation(View v)
@@ -44,59 +52,43 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onResume() {
         super.onResume();
-        // Add the following line to register the Session Manager Listener onResume
-        sensorManager.registerListener(this, linearAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(shakeDetector, linearAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     public void onPause() {
-        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(shakeDetector);
         super.onPause();
     }
 
-    private void onShake(float acceleration)
-    {
-        Toast.makeText(this, "SHAKE", Toast.LENGTH_SHORT).show();
-    }
-
-    //region Accelerometer
-    private long lastUpdate;
-    private static final long SHAKE_THRESHOLD = 200;
-    private static final float SHAKE_GRAVITY_THRESHOLD = 10.0f;
-
     @Override
-    public void onSensorChanged(SensorEvent event)
+    public void onShake(int shakeCount, float acceleration)
     {
-        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION)
+        Toast.makeText(this, "SHAKE no. " + shakeCount + " - " + acceleration, Toast.LENGTH_SHORT).show();
+        if(shakeCount <= 3)
         {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
-
-            float g = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH);
-
-//            Toast.makeText(this, "HIT" + g, Toast.LENGTH_SHORT).show();
-
-            long currentTime = System.currentTimeMillis();
-
-            if (currentTime - lastUpdate >= SHAKE_THRESHOLD)
-            {
-                if (g >= SHAKE_GRAVITY_THRESHOLD)
-                {
-                    final TextView tv = findViewById(R.id.sensorsOutput);
-                    tv.append("Acceleration " + g + "\n");
-                    lastUpdate = currentTime;
-                    onShake(g);
-                }
-            }
-
+            questionRandomSeed += (long) shakeCount * 1000;
+        }
+        else
+        {
+            sensorManager.unregisterListener(shakeDetector);
+            startGame();
         }
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
+    private void startGame()
     {
-
+        final Intent gameIntent = new Intent(this, GameActivity.class);
+        gameIntent.putExtra(GameActivity.ARG_RANDOM_SEED, questionRandomSeed);
+        //startActivityForResult(gameIntent, START_GAME_REQ);
+        startActivity(gameIntent);
     }
-    //endregion
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == START_GAME_REQ) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, "KONIEC GRY", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
