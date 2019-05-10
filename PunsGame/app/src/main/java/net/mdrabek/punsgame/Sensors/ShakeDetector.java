@@ -4,13 +4,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.widget.TextView;
-
-import net.mdrabek.punsgame.R;
 
 public class ShakeDetector implements SensorEventListener
 {
-    public interface OnShakeListener
+    public interface ShakeListener
     {
         void onShake(int shakeCount, float acceleration);
     }
@@ -21,14 +18,14 @@ public class ShakeDetector implements SensorEventListener
 
     private long lastUpdate;
     private int count;
-    private OnShakeListener listener;
+    private ShakeListener listener;
 
-    public ShakeDetector(OnShakeListener listener)
+    public ShakeDetector(ShakeListener listener)
     {
         this.listener = listener;
     }
 
-    public void setListener(OnShakeListener listener)
+    public void setListener(ShakeListener listener)
     {
         this.listener = listener;
     }

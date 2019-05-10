@@ -3,20 +3,20 @@ package net.mdrabek.punsgame;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import net.mdrabek.punsgame.Sensors.ShakeDetector;
 
-public class MainActivity extends AppCompatActivity implements ShakeDetector.OnShakeListener
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ShakeDetector.ShakeListener
 {
     public static final int START_GAME_REQ = 31231;
 

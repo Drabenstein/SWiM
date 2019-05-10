@@ -1,6 +1,9 @@
 package net.mdrabek.punsgame;
 
 import android.content.pm.ActivityInfo;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -16,15 +19,17 @@ import net.mdrabek.punsgame.Models.QuestionLimitReachedException;
 import net.mdrabek.punsgame.Models.QuestionSetManager;
 import net.mdrabek.punsgame.Repositories.FakeQuestionRepository;
 import net.mdrabek.punsgame.Repositories.QuestionRepository;
+import net.mdrabek.punsgame.Sensors.CloseProximityDetector;
 
 import java.util.List;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity implements QuestionFragment.OnQuestionEventListener,
         GiveUpFragment.OnGiveUpTimeoutExceededListener, TimePassedFragment.OnTimePassedTimeoutExceededListener,
-        GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener
+        GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener, CloseProximityDetector.CloseProximityListener
 {
     public static final int INFO_TIMEOUT = 800;
+    public static final String TAG_QUESTION_FRAGMENT = "QuestionFragment";
 
     public static final String ARG_RANDOM_SEED = "random-seed";
     public static final String ARG_QUESTION_COUNT = "question-count";
@@ -33,6 +38,9 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private int maxQuestionCount = 10;
     private Random random;
     private QuestionSetManager questionSetManager;
+    private SensorManager sensorManager;
+    private Sensor proximitySensor;
+    private CloseProximityDetector proximityDetector;
 
     private QuestionFragment questionFragment;
     private TimePassedFragment timePassedFragment;
@@ -61,12 +69,45 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
             fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-            fragmentTransaction.add(R.id.gameFrameLayout, questionFragment);
+            fragmentTransaction.add(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
             fragmentTransaction.commit();
         }
         catch (QuestionLimitReachedException e)
         {
             finish();
+        }
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        if(proximitySensor != null)
+        {
+            proximityDetector = new CloseProximityDetector(this);
+            sensorManager.registerListener(proximityDetector, proximitySensor, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+
+    @Override
+    protected void onPause()
+    {
+        if(proximitySensor != null)
+        {
+            sensorManager.unregisterListener(proximityDetector);
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if(proximitySensor != null)
+        {
+            if(proximityDetector == null)
+            {
+                proximityDetector = new CloseProximityDetector(this);
+            }
+
+            sensorManager.registerListener(proximityDetector, proximitySensor, SensorManager.SENSOR_DELAY_UI);
         }
     }
 
@@ -107,7 +148,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         {
             questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.gameFrameLayout, questionFragment);
+            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
             transaction.commit();
         }
         catch (QuestionLimitReachedException e)
@@ -125,7 +166,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         {
             questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.gameFrameLayout, questionFragment);
+            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
             transaction.commit();
         }
         catch (QuestionLimitReachedException e)
@@ -143,12 +184,22 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         {
             questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.gameFrameLayout, questionFragment);
+            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
             transaction.commit();
         }
         catch (QuestionLimitReachedException e)
         {
             finish();
+        }
+    }
+
+    @Override
+    public void onProximityClose()
+    {
+        Fragment fragment = fragmentManager.findFragmentByTag(TAG_QUESTION_FRAGMENT);
+        if(fragment != null && fragment.isVisible())
+        {
+            questionFragment.onClick(null);
         }
     }
 }
