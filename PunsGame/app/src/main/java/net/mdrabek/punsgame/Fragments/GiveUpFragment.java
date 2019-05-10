@@ -15,7 +15,7 @@ public class GiveUpFragment extends Fragment
     private static final String ARG_TIMEOUT = "timeout";
 
     private OnGiveUpTimeoutExceededListener listener;
-    private int timeout = 2000;
+    private int timeout = 1000;
 
     public GiveUpFragment()
     {
@@ -51,7 +51,7 @@ public class GiveUpFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View root = inflater.inflate(R.layout.fragment_time_passed, container, false);
+        View root = inflater.inflate(R.layout.fragment_give_up, container, false);
         new CountDownTimer(timeout, timeout)
         {
             @Override
@@ -64,7 +64,7 @@ public class GiveUpFragment extends Fragment
             {
                 onGiveUpTimeoutExceeded();
             }
-        };
+        }.start();
 
         return root;
     }

@@ -3,6 +3,7 @@ package net.mdrabek.punsgame.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,8 +71,8 @@ public class QuestionFragment extends Fragment implements View.OnClickListener
         TextView questionTextView = root.findViewById(R.id.questionTextView);
         questionTextView.setText(question.getDescription());
 
-        root.findViewById(R.id.questionTextView).setOnClickListener(this);
-        root.findViewById(R.id.questionTimerTextView).setOnClickListener(this);
+        TextView tv = root.findViewById(R.id.questionCategoryTextView);
+        tv.setText(Question.QuestionCategory.toPolishName(question.getCategory()));
         root.findViewById(R.id.questionFrameLayout).setOnClickListener(this);
 
         final TextView timerTextView = root.findViewById(R.id.questionTimerTextView);
@@ -80,7 +81,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener
             public void onTick(long millisUntilFinished) {
                 long minutes = millisUntilFinished / MINUTE_IN_MILLIS;
                 long seconds = (millisUntilFinished % MINUTE_IN_MILLIS) / SECOND_IN_MILLIS;
-                timerTextView.setText(minutes + ":" + seconds);
+                timerTextView.setText(minutes + ":" + String.format("%02d", seconds));
             }
 
             public void onFinish() {
@@ -133,6 +134,12 @@ public class QuestionFragment extends Fragment implements View.OnClickListener
     public void onClick(View v)
     {
         onQuestionSkipped();
+    }
+
+    public void setQuestion(@NonNull Question question)
+    {
+        this.question = question;
+
     }
 
     public interface OnQuestionEventListener

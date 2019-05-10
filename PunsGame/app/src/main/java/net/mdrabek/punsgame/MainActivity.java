@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.OnS
     public void onShake(int shakeCount, float acceleration)
     {
         Toast.makeText(this, "SHAKE no. " + shakeCount + " - " + acceleration, Toast.LENGTH_SHORT).show();
-        if(shakeCount <= 3)
+        if(shakeCount < 3)
         {
-            questionRandomSeed += (long) shakeCount * 1000;
+            questionRandomSeed *= (long) shakeCount * 1000;
         }
         else
         {

@@ -72,7 +72,7 @@ public class TimePassedFragment extends Fragment
             {
                 onTimePassedTimeoutExceeded();
             }
-        };
+        }.start();
 
         return root;
     }

@@ -9,7 +9,29 @@ public class Question
         FOOD,
         ANIMALS,
         FICTION_CHARACTERS,
-        ADAGES
+        ADAGES;
+
+        private static final String FoodPL = "Jedzenie";
+        private static final String AnimalsPL = "Zwierzęta";
+        private static final String FictionCharactersPL = "Postacie fikcyjne";
+        private static final String AdagesPL = "Przysłowia";
+
+        public static String toPolishName(QuestionCategory category)
+        {
+            switch (category)
+            {
+                case FOOD:
+                    return FoodPL;
+                case ANIMALS:
+                    return AnimalsPL;
+                case FICTION_CHARACTERS:
+                    return FictionCharactersPL;
+                case ADAGES:
+                    return AdagesPL;
+                default:
+                    return "";
+            }
+        }
     }
 
     private QuestionCategory category;

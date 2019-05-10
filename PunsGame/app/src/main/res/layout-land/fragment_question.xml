@@ -8,7 +8,15 @@
     android:id="@+id/questionFrameLayout">
 
     <TextView
+        android:id="@+id/questionCategoryTextView"
+        android:layout_gravity="top|center_horizontal"
+        style="@style/CategoryStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
         android:id="@+id/questionTextView"
+        android:keepScreenOn="true"
         style="@style/GameTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
