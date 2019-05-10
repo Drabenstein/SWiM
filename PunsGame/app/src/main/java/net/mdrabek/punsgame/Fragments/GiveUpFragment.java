@@ -10,22 +10,14 @@ import android.view.ViewGroup;
 
 import net.mdrabek.punsgame.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnTimePassedTimeoutExceededListener} interface
- * to handle interaction events.
- * Use the {@link TimePassedFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TimePassedFragment extends Fragment
+public class GiveUpFragment extends Fragment
 {
     private static final String ARG_TIMEOUT = "timeout";
 
-    private OnTimePassedTimeoutExceededListener listener;
+    private OnGiveUpTimeoutExceededListener listener;
     private int timeout = 2000;
 
-    public TimePassedFragment()
+    public GiveUpFragment()
     {
     }
 
@@ -34,11 +26,11 @@ public class TimePassedFragment extends Fragment
      * this fragment using the provided parameters.
      *
      * @param timeout Timeout value after which fragment sends event
-     * @return A new instance of fragment TimePassedFragment.
+     * @return A new instance of fragment GiveUpFragment.
      */
-    public static TimePassedFragment newInstance(int timeout)
+    public static GiveUpFragment newInstance(int timeout)
     {
-        TimePassedFragment fragment = new TimePassedFragment();
+        GiveUpFragment fragment = new GiveUpFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_TIMEOUT, timeout);
         fragment.setArguments(args);
@@ -70,18 +62,18 @@ public class TimePassedFragment extends Fragment
             @Override
             public void onFinish()
             {
-                onTimePassedTimeoutExceeded();
+                onGiveUpTimeoutExceeded();
             }
         };
 
         return root;
     }
 
-    private void onTimePassedTimeoutExceeded()
+    private void onGiveUpTimeoutExceeded()
     {
-        if(listener != null)
+        if (listener != null)
         {
-            listener.onTimePassedTimeoutExceeded();
+            listener.onGiveUpTimeoutExceeded();
         }
     }
 
@@ -89,14 +81,14 @@ public class TimePassedFragment extends Fragment
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof OnTimePassedTimeoutExceededListener)
+        if (context instanceof OnGiveUpTimeoutExceededListener)
         {
-            listener = (OnTimePassedTimeoutExceededListener) context;
+            listener = (OnGiveUpTimeoutExceededListener) context;
         }
         else
         {
             throw new RuntimeException(context.toString()
-                    + " must implement OnTimePassedTimeoutExceededListener");
+                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -117,8 +109,8 @@ public class TimePassedFragment extends Fragment
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnTimePassedTimeoutExceededListener
+    public interface OnGiveUpTimeoutExceededListener
     {
-        void onTimePassedTimeoutExceeded();
+        void onGiveUpTimeoutExceeded();
     }
 }

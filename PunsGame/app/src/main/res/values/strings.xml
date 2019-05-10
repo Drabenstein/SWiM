@@ -3,5 +3,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="timePassed">Czas minął</string>
-    <string name="gaveUp">Pasuję</string>
+    <string name="giveUp">Pasuję</string>
 </resources>
