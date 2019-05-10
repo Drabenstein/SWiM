@@ -136,12 +136,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener
         onQuestionSkipped();
     }
 
-    public void setQuestion(@NonNull Question question)
-    {
-        this.question = question;
-
-    }
-
     public interface OnQuestionEventListener
     {
         void onQuestionSkipped(Question question);

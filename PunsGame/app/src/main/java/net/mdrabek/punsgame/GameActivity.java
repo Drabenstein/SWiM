@@ -119,14 +119,10 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     public void onTimePassedTimeoutExceeded()
     {
         Toast.makeText(this, "TIME PASSED FINISHED", Toast.LENGTH_SHORT).show();
-        if (questionFragment == null)
-        {
-            questionFragment = new QuestionFragment();
-        }
 
         try
         {
-            questionFragment.setQuestion(questionSetManager.getNextQuestion());
+            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.gameFrameLayout, questionFragment);
             transaction.commit();
