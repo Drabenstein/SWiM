@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import net.mdrabek.punsgame.Fragments.GiveUpFragment;
+import net.mdrabek.punsgame.Fragments.GoodAnswerFragment;
 import net.mdrabek.punsgame.Fragments.QuestionFragment;
 import net.mdrabek.punsgame.Fragments.TimePassedFragment;
 import net.mdrabek.punsgame.Models.Question;
@@ -20,15 +21,13 @@ import java.util.List;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity implements QuestionFragment.OnQuestionEventListener,
-        GiveUpFragment.OnGiveUpTimeoutExceededListener, TimePassedFragment.OnTimePassedTimeoutExceededListener
+        GiveUpFragment.OnGiveUpTimeoutExceededListener, TimePassedFragment.OnTimePassedTimeoutExceededListener,
+        GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener
 {
     public static final int INFO_TIMEOUT = 800;
 
     public static final String ARG_RANDOM_SEED = "random-seed";
     public static final String ARG_QUESTION_COUNT = "question-count";
-
-    public static final String ARG_GOOD_ANSWERS = "good-answers";
-    public static final String ARG_WRONG_ANSWERS = "wrong-answers";
 
     private FragmentManager fragmentManager;
     private int maxQuestionCount = 10;
@@ -38,6 +37,8 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private QuestionFragment questionFragment;
     private TimePassedFragment timePassedFragment;
     private GiveUpFragment giveUpFragment;
+
+    private int goodQuestionCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -119,6 +120,24 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     public void onTimePassedTimeoutExceeded()
     {
         Toast.makeText(this, "TIME PASSED FINISHED", Toast.LENGTH_SHORT).show();
+
+        try
+        {
+            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.gameFrameLayout, questionFragment);
+            transaction.commit();
+        }
+        catch (QuestionLimitReachedException e)
+        {
+            finish();
+        }
+    }
+
+    @Override
+    public void onGoodAnswerTimeoutExceeded()
+    {
+        Toast.makeText(this, "GOOD ANSWER FINISHED", Toast.LENGTH_SHORT).show();
 
         try
         {

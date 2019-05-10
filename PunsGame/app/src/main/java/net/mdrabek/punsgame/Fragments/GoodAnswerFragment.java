@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 
 import net.mdrabek.punsgame.R;
 
-public class GiveUpFragment extends Fragment
+public class GoodAnswerFragment extends Fragment
 {
     private static final String ARG_TIMEOUT = "timeout";
 
-    private OnGiveUpTimeoutExceededListener listener;
+    private OnGoodAnswerTImeoutExceededListener listener;
     private int timeout = 1000;
 
-    public GiveUpFragment()
+    public GoodAnswerFragment()
     {
     }
 
@@ -26,11 +26,11 @@ public class GiveUpFragment extends Fragment
      * this fragment using the provided parameters.
      *
      * @param timeout Timeout value after which fragment sends event
-     * @return A new instance of fragment GiveUpFragment.
+     * @return A new instance of fragment GoodAnswerFragment.
      */
-    public static GiveUpFragment newInstance(int timeout)
+    public static GoodAnswerFragment newInstance(int timeout)
     {
-        GiveUpFragment fragment = new GiveUpFragment();
+        GoodAnswerFragment fragment = new GoodAnswerFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_TIMEOUT, timeout);
         fragment.setArguments(args);
@@ -51,7 +51,7 @@ public class GiveUpFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View root = inflater.inflate(R.layout.fragment_give_up, container, false);
+        View root = inflater.inflate(R.layout.fragment_good_answer, container, false);
         new CountDownTimer(timeout, timeout)
         {
             @Override
@@ -62,18 +62,17 @@ public class GiveUpFragment extends Fragment
             @Override
             public void onFinish()
             {
-                onGiveUpTimeoutExceeded();
+                onGoodAnswerTimeoutExceeded();
             }
         }.start();
-
         return root;
     }
 
-    private void onGiveUpTimeoutExceeded()
+    public void onGoodAnswerTimeoutExceeded()
     {
         if (listener != null)
         {
-            listener.onGiveUpTimeoutExceeded();
+            listener.onGoodAnswerTimeoutExceeded();
         }
     }
 
@@ -81,9 +80,9 @@ public class GiveUpFragment extends Fragment
     public void onAttach(Context context)
     {
         super.onAttach(context);
-        if (context instanceof OnGiveUpTimeoutExceededListener)
+        if (context instanceof OnGoodAnswerTImeoutExceededListener)
         {
-            listener = (OnGiveUpTimeoutExceededListener) context;
+            listener = (OnGoodAnswerTImeoutExceededListener) context;
         }
         else
         {
@@ -109,8 +108,8 @@ public class GiveUpFragment extends Fragment
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnGiveUpTimeoutExceededListener
+    public interface OnGoodAnswerTImeoutExceededListener
     {
-        void onGiveUpTimeoutExceeded();
+        void onGoodAnswerTimeoutExceeded();
     }
 }

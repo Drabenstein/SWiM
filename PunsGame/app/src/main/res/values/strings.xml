@@ -4,4 +4,5 @@
 
     <string name="timePassed">Czas minął</string>
     <string name="giveUp">Pasuję</string>
+    <string name="goodAnswer">Dobrze</string>
 </resources>
