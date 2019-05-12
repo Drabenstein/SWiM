@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import net.mdrabek.punsgame.Fragments.CountingFragment;
 import net.mdrabek.punsgame.Fragments.GiveUpFragment;
 import net.mdrabek.punsgame.Fragments.GoodAnswerFragment;
 import net.mdrabek.punsgame.Fragments.QuestionFragment;
+import net.mdrabek.punsgame.Fragments.RotatePerpendicularFragment;
 import net.mdrabek.punsgame.Fragments.TimePassedFragment;
 import net.mdrabek.punsgame.Models.Question;
 import net.mdrabek.punsgame.Models.QuestionLimitReachedException;
@@ -28,13 +30,15 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity implements QuestionFragment.OnQuestionEventListener,
         GiveUpFragment.OnGiveUpTimeoutExceededListener, TimePassedFragment.OnTimePassedTimeoutExceededListener,
         GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener, CloseProximityDetector.CloseProximityListener,
-        RotationDetector.RotationChangedListener
+        RotationDetector.RotationChangedListener, CountingFragment.StarterCountingTimeoutExceededListener
 {
     public static final int ROTATION_SAMPLING_RATE = 600;
     public static final int ROTATION_MAX_LATENCY = 200;
     public static final int INFO_TIMEOUT = 800;
+    public static final int START_COUNT = 3000;
 
     public static final String TAG_QUESTION_FRAGMENT = QuestionFragment.class.getSimpleName();
+    public static final String TAG_START_GAME_FRAGMENT = RotatePerpendicularFragment.class.getSimpleName();
 
     public static final String ARG_RANDOM_SEED = "random-seed";
     public static final String ARG_QUESTION_COUNT = "question-count";
@@ -74,18 +78,18 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         List<Question> questionList = questionRepository.getQuestionList(Question.QuestionCategory.values()[category]);
         questionSetManager = new QuestionSetManager(questionList, random, maxQuestionCount);
 
-        try
-        {
-            fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-            fragmentTransaction.add(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
-            fragmentTransaction.commit();
-        }
-        catch (QuestionLimitReachedException e)
-        {
-            finish();
-        }
+//        try
+//        {
+//            fragmentManager = getSupportFragmentManager();
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+//            fragmentTransaction.add(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
+//            fragmentTransaction.commit();
+//        }
+//        catch (QuestionLimitReachedException e)
+//        {
+//            finish();
+//        }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
@@ -101,6 +105,11 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
             rotationDetector = new RotationDetector(getWindowManager(), this);
             registerRotationSensor();
         }
+
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.gameFrameLayout, new RotatePerpendicularFragment(), TAG_START_GAME_FRAGMENT);
+        transaction.commit();
     }
 
     @Override
@@ -260,6 +269,12 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
                 finish();
             }
         }
+        else if(fragmentManager.findFragmentByTag(TAG_START_GAME_FRAGMENT) != null)
+        {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.gameFrameLayout, CountingFragment.newInstance(START_COUNT));
+            transaction.commit();
+        }
         else if (questionFragment != null && questionFragment.isVisible()
                 && state != RotationDetector.RotationState.PERPENDICULAR)
         {
@@ -271,6 +286,23 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.gameFrameLayout, goodAnswerFragment);
             transaction.commit();
+        }
+    }
+
+    @Override
+    public void onStarterCountingTimeoutExceeded()
+    {
+        try
+        {
+            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
+            transaction.commit();
+        }
+        catch (QuestionLimitReachedException e)
+        {
+            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }
