@@ -35,8 +35,6 @@ public class CloseProximityDetector implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        Toast.makeText((Context) listener, Float.toString(event.values[0]), Toast.LENGTH_SHORT).show();
-
         long currentTime = System.currentTimeMillis();
 
         if (currentTime - lastUpdate > COVER_GESTURE_THRESHOLD)
