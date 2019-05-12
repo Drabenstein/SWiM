@@ -10,7 +10,6 @@ public class RotationDetector implements SensorEventListener
 {
     private WindowManager windowManager;
     private RotationChangedListener listener;
-    private RotationState previousState = RotationState.PERPENDICULAR;
 
     public RotationDetector(@NonNull WindowManager windowManager, @NonNull RotationChangedListener listener)
     {
@@ -66,15 +65,10 @@ public class RotationDetector implements SensorEventListener
 
     private void onOrientationChanged(RotationState state)
     {
-//        if (previousState != state)
-//        {
-            if (listener != null)
-            {
-                listener.onOrientationChanged(state);
-            }
-
-            //previousState = state;
-//        }
+        if (listener != null)
+        {
+            listener.onOrientationChanged(state);
+        }
     }
 
     public interface RotationChangedListener
