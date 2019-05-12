@@ -32,16 +32,18 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener, CloseProximityDetector.CloseProximityListener,
         RotationDetector.RotationChangedListener, CountingFragment.StarterCountingTimeoutExceededListener
 {
-    public static final int ROTATION_SAMPLING_RATE = 600;
-    public static final int ROTATION_MAX_LATENCY = 200;
-    public static final int INFO_TIMEOUT = 800;
-    public static final int START_COUNT = 3000;
+    private static final int ROTATION_SAMPLING_RATE = 600;
+    private static final int ROTATION_MAX_LATENCY = 200;
+    private static final int INFO_TIMEOUT = 800;
+    private static final int START_COUNT = 3000;
+    private static final int DEFAULT_MAX_QUESTIONS = 10;
 
     public static final String TAG_QUESTION_FRAGMENT = QuestionFragment.class.getSimpleName();
     public static final String TAG_START_GAME_FRAGMENT = RotatePerpendicularFragment.class.getSimpleName();
 
     public static final String ARG_RANDOM_SEED = "random-seed";
     public static final String ARG_QUESTION_COUNT = "question-count";
+    public static final String ARG_CATEGORY = "category";
 
     private FragmentManager fragmentManager;
     private Random random;
@@ -50,7 +52,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private Sensor proximitySensor;
     private CloseProximityDetector proximityDetector;
 
-    private int maxQuestionCount = 10;
+    private int maxQuestionCount;
 
     private Sensor rotationVectorSensor;
     private RotationDetector rotationDetector;
@@ -71,25 +73,12 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
 
         QuestionRepository questionRepository = new FakeQuestionRepository();
 
-        maxQuestionCount = getIntent().getIntExtra(ARG_QUESTION_COUNT, 10);
+        maxQuestionCount = getIntent().getIntExtra(ARG_QUESTION_COUNT, DEFAULT_MAX_QUESTIONS);
         long randomSeed = getIntent().getLongExtra(ARG_RANDOM_SEED, System.currentTimeMillis());
         random = new Random(randomSeed + System.currentTimeMillis());
-        int category = random.nextInt(Question.QuestionCategory.values().length);
+        int category = getIntent().getIntExtra(ARG_CATEGORY, random.nextInt(Question.QuestionCategory.values().length));
         List<Question> questionList = questionRepository.getQuestionList(Question.QuestionCategory.values()[category]);
         questionSetManager = new QuestionSetManager(questionList, random, maxQuestionCount);
-
-//        try
-//        {
-//            fragmentManager = getSupportFragmentManager();
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-//            fragmentTransaction.add(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
-//            fragmentTransaction.commit();
-//        }
-//        catch (QuestionLimitReachedException e)
-//        {
-//            finish();
-//        }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
