@@ -20,14 +20,18 @@ import net.mdrabek.punsgame.Models.QuestionSetManager;
 import net.mdrabek.punsgame.Repositories.FakeQuestionRepository;
 import net.mdrabek.punsgame.Repositories.QuestionRepository;
 import net.mdrabek.punsgame.Sensors.CloseProximityDetector;
+import net.mdrabek.punsgame.Sensors.RotationDetector;
 
 import java.util.List;
 import java.util.Random;
 
 public class GameActivity extends AppCompatActivity implements QuestionFragment.OnQuestionEventListener,
         GiveUpFragment.OnGiveUpTimeoutExceededListener, TimePassedFragment.OnTimePassedTimeoutExceededListener,
-        GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener, CloseProximityDetector.CloseProximityListener
+        GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener, CloseProximityDetector.CloseProximityListener,
+        RotationDetector.RotationChangedListener
 {
+    public static final int ROTATION_SAMPLING_RATE = 1000;
+    public static final int ROTATION_MAX_LATENCY = 500;
     public static final int INFO_TIMEOUT = 800;
     public static final String TAG_QUESTION_FRAGMENT = "QuestionFragment";
 
@@ -42,9 +46,13 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private Sensor proximitySensor;
     private CloseProximityDetector proximityDetector;
 
+    private Sensor rotationVectorSensor;
+    private RotationDetector rotationDetector;
+
     private QuestionFragment questionFragment;
     private TimePassedFragment timePassedFragment;
     private GiveUpFragment giveUpFragment;
+    private GoodAnswerFragment goodAnswerFragment;
 
     private int goodQuestionCount;
 
@@ -84,6 +92,13 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
             proximityDetector = new CloseProximityDetector(this);
             sensorManager.registerListener(proximityDetector, proximitySensor, SensorManager.SENSOR_DELAY_UI);
         }
+
+        rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
+        if(rotationVectorSensor != null)
+        {
+            rotationDetector = new RotationDetector(getWindowManager(), this);
+            registerRotationSensor();
+        }
     }
 
     @Override
@@ -91,9 +106,38 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     {
         if(proximitySensor != null)
         {
-            sensorManager.unregisterListener(proximityDetector);
+            if (proximityDetector != null)
+            {
+                sensorManager.unregisterListener(proximityDetector);
+            }
         }
+
+        unregisterRotationSensor();
         super.onPause();
+    }
+
+    private void registerRotationSensor()
+    {
+        if(rotationVectorSensor != null)
+        {
+            if(rotationDetector == null)
+            {
+                rotationDetector = new RotationDetector(getWindowManager(), this);
+            }
+
+            sensorManager.registerListener(rotationDetector, rotationVectorSensor, ROTATION_SAMPLING_RATE, ROTATION_MAX_LATENCY);
+        }
+    }
+
+    private void unregisterRotationSensor()
+    {
+        if(rotationVectorSensor != null)
+        {
+            if (rotationDetector != null)
+            {
+                sensorManager.unregisterListener(rotationDetector);
+            }
+        }
     }
 
     @Override
@@ -107,8 +151,9 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
                 proximityDetector = new CloseProximityDetector(this);
             }
 
-            sensorManager.registerListener(proximityDetector, proximitySensor, SensorManager.SENSOR_DELAY_UI);
+            sensorManager.registerListener(proximityDetector, proximitySensor, 1000, 500);
         }
+        registerRotationSensor();
     }
 
     @Override
@@ -201,5 +246,30 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         {
             questionFragment.onClick(null);
         }
+    }
+
+    @Override
+    public void onOrientationChanged(RotationDetector.RotationState state)
+    {
+        Fragment questionFragment = fragmentManager.findFragmentByTag(TAG_QUESTION_FRAGMENT);
+
+        if(questionFragment != null && questionFragment.isVisible()
+            && state != RotationDetector.RotationState.PERPENDICULAR)
+        {
+            Toast.makeText(this, "GOOD ANSWER", Toast.LENGTH_SHORT).show();
+            if (goodAnswerFragment == null)
+            {
+                goodAnswerFragment = GoodAnswerFragment.newInstance(INFO_TIMEOUT);
+            }
+
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.gameFrameLayout, goodAnswerFragment);
+            transaction.commit();
+        }
+    }
+
+    private void ensureDevicePerpendicular()
+    {
+
     }
 }
