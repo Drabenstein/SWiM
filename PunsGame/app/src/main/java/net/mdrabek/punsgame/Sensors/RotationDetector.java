@@ -50,7 +50,7 @@ public class RotationDetector implements SensorEventListener
 //            [1] < 0.1
 //            [2] < 0.1
 
-        if (rotationVector[0] > 0.4f && rotationVector[0] < 0.6f && rotationVector[1] < 0.1f && rotationVector[2] > 0.75f)
+        if (rotationVector[0] > 0.3f && rotationVector[0] < 0.75f && rotationVector[1] < 0.1f && rotationVector[2] > 0.7f)
         {
             onOrientationChanged(RotationState.PERPENDICULAR);
         }
@@ -66,15 +66,15 @@ public class RotationDetector implements SensorEventListener
 
     private void onOrientationChanged(RotationState state)
     {
-        if (previousState != state)
-        {
+//        if (previousState != state)
+//        {
             if (listener != null)
             {
                 listener.onOrientationChanged(state);
             }
 
-            previousState = state;
-        }
+            //previousState = state;
+//        }
     }
 
     public interface RotationChangedListener
