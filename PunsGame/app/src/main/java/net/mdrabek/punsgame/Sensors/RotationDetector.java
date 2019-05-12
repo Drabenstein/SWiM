@@ -10,6 +10,7 @@ public class RotationDetector implements SensorEventListener
 {
     private WindowManager windowManager;
     private RotationChangedListener listener;
+    private RotationState previousState = RotationState.PERPENDICULAR;
 
     public RotationDetector(@NonNull WindowManager windowManager,@NonNull RotationChangedListener listener)
     {
@@ -35,31 +36,43 @@ public class RotationDetector implements SensorEventListener
     private void handleRotation(float[] rotationVector)
     {
 //        PERPENDICULAR
-//                [0] 0.5-0.6
+//            [0] 0.5-0.6
 //            [1] < 0.1
 //            [2] > 0.75
 //
 //        UP_TO_THE_SKY
-//                [0] < 0.1
-//                [1] < 0.1
-//                [2] > 0.95 (0.98)
+//            [0] < 0.1
+//            [1] < 0.1
+//            [2] > 0.95 (0.98)
 //
-//        TO THE GROUND
+//        DOWN_TO_THE_GROUND
 //            [0] < -0.95 (-0.99)
 //            [1] < 0.1
 //            [2] < 0.1
 
         if(rotationVector[0] > 0.5f && rotationVector[0] < 0.6f && rotationVector[1] < 0.1f && rotationVector[2] > 0.75f)
         {
-            onOrientationChanged(RotationState.PERPENDICULAR);
+            if (previousState != RotationState.PERPENDICULAR)
+            {
+                onOrientationChanged(RotationState.PERPENDICULAR);
+                previousState = RotationState.PERPENDICULAR;
+            }
         }
         else if(rotationVector[0] < 0.1f && rotationVector[1] < 0.1f && rotationVector[2] > 0.95f)
         {
-            onOrientationChanged(RotationState.UP_TO_THE_SKY);
+            if (previousState != RotationState.UP_TO_THE_SKY)
+            {
+                onOrientationChanged(RotationState.UP_TO_THE_SKY);
+                previousState = RotationState.UP_TO_THE_SKY;
+            }
         }
         else if(rotationVector[0] < -0.95f && rotationVector[1] < 0.1f && rotationVector[2] < 0.1)
         {
-            onOrientationChanged(RotationState.DOWN_TO_THE_GROUND);
+            if (previousState != RotationState.DOWN_TO_THE_GROUND)
+            {
+                onOrientationChanged(RotationState.DOWN_TO_THE_GROUND);
+                previousState = RotationState.DOWN_TO_THE_GROUND;
+            }
         }
     }
 
