@@ -28,16 +28,13 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity implements QuestionFragment.OnQuestionEventListener,
         GiveUpFragment.OnGiveUpTimeoutExceededListener, TimePassedFragment.OnTimePassedTimeoutExceededListener,
         GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener, CloseProximityDetector.CloseProximityListener,
-        RotationDetector.RotationChangedListener, RotateDeviceFragment.ClickListener
+        RotationDetector.RotationChangedListener
 {
     public static final int ROTATION_SAMPLING_RATE = 600;
     public static final int ROTATION_MAX_LATENCY = 200;
     public static final int INFO_TIMEOUT = 800;
 
     public static final String TAG_QUESTION_FRAGMENT = QuestionFragment.class.getSimpleName();
-    public static final String TAG_GOOD_ANSWER_FRAGMENT = GoodAnswerFragment.class.getSimpleName();
-    public static final String TAG_GIVE_UP_FRAGMENT = GiveUpFragment.class.getSimpleName();
-    public static final String TAG_TIME_PASSED_FRAGMENT = TimePassedFragment.class.getSimpleName();
 
     public static final String ARG_RANDOM_SEED = "random-seed";
     public static final String ARG_QUESTION_COUNT = "question-count";
@@ -60,7 +57,6 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private GoodAnswerFragment goodAnswerFragment;
 
     private boolean moveToNextQuestion;
-    private int goodQuestionCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -230,24 +226,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     public void onGoodAnswerTimeoutExceeded()
     {
         Toast.makeText(this, "GOOD ANSWER FINISHED", Toast.LENGTH_SHORT).show();
-
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        transaction.replace(R.id.gameFrameLayout, new RotateDeviceFragment());
-//        transaction.commit();
-
         moveToNextQuestion = true;
-//        try
-//        {
-//            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-//            FragmentTransaction transaction = fragmentManager.beginTransaction();
-//            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
-//            transaction.commit();
-//        }
-//        catch (QuestionLimitReachedException e)
-//        {
-//            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//            finish();
-//        }
     }
 
     @Override
@@ -292,23 +271,6 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.gameFrameLayout, goodAnswerFragment);
             transaction.commit();
-        }
-    }
-
-    @Override
-    public void onClick()
-    {
-        try
-        {
-            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
-            transaction.commit();
-        }
-        catch (QuestionLimitReachedException e)
-        {
-            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            finish();
         }
     }
 }
