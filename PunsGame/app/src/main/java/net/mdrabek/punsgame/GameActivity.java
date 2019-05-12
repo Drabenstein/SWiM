@@ -28,23 +28,28 @@ import java.util.Random;
 public class GameActivity extends AppCompatActivity implements QuestionFragment.OnQuestionEventListener,
         GiveUpFragment.OnGiveUpTimeoutExceededListener, TimePassedFragment.OnTimePassedTimeoutExceededListener,
         GoodAnswerFragment.OnGoodAnswerTImeoutExceededListener, CloseProximityDetector.CloseProximityListener,
-        RotationDetector.RotationChangedListener
+        RotationDetector.RotationChangedListener, RotateDeviceFragment.ClickListener
 {
-    public static final int ROTATION_SAMPLING_RATE = 1000;
-    public static final int ROTATION_MAX_LATENCY = 500;
+    public static final int ROTATION_SAMPLING_RATE = 600;
+    public static final int ROTATION_MAX_LATENCY = 200;
     public static final int INFO_TIMEOUT = 800;
-    public static final String TAG_QUESTION_FRAGMENT = "QuestionFragment";
+
+    public static final String TAG_QUESTION_FRAGMENT = QuestionFragment.class.getSimpleName();
+    public static final String TAG_GOOD_ANSWER_FRAGMENT = GoodAnswerFragment.class.getSimpleName();
+    public static final String TAG_GIVE_UP_FRAGMENT = GiveUpFragment.class.getSimpleName();
+    public static final String TAG_TIME_PASSED_FRAGMENT = TimePassedFragment.class.getSimpleName();
 
     public static final String ARG_RANDOM_SEED = "random-seed";
     public static final String ARG_QUESTION_COUNT = "question-count";
 
     private FragmentManager fragmentManager;
-    private int maxQuestionCount = 10;
     private Random random;
     private QuestionSetManager questionSetManager;
     private SensorManager sensorManager;
     private Sensor proximitySensor;
     private CloseProximityDetector proximityDetector;
+
+    private int maxQuestionCount = 10;
 
     private Sensor rotationVectorSensor;
     private RotationDetector rotationDetector;
@@ -54,6 +59,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private GiveUpFragment giveUpFragment;
     private GoodAnswerFragment goodAnswerFragment;
 
+    private boolean moveToNextQuestion;
     private int goodQuestionCount;
 
     @Override
@@ -87,14 +93,14 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        if(proximitySensor != null)
+        if (proximitySensor != null)
         {
             proximityDetector = new CloseProximityDetector(this);
             sensorManager.registerListener(proximityDetector, proximitySensor, SensorManager.SENSOR_DELAY_UI);
         }
 
         rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
-        if(rotationVectorSensor != null)
+        if (rotationVectorSensor != null)
         {
             rotationDetector = new RotationDetector(getWindowManager(), this);
             registerRotationSensor();
@@ -104,7 +110,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     @Override
     protected void onPause()
     {
-        if(proximitySensor != null)
+        if (proximitySensor != null)
         {
             if (proximityDetector != null)
             {
@@ -118,9 +124,9 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
 
     private void registerRotationSensor()
     {
-        if(rotationVectorSensor != null)
+        if (rotationVectorSensor != null)
         {
-            if(rotationDetector == null)
+            if (rotationDetector == null)
             {
                 rotationDetector = new RotationDetector(getWindowManager(), this);
             }
@@ -131,7 +137,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
 
     private void unregisterRotationSensor()
     {
-        if(rotationVectorSensor != null)
+        if (rotationVectorSensor != null)
         {
             if (rotationDetector != null)
             {
@@ -144,9 +150,9 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     protected void onResume()
     {
         super.onResume();
-        if(proximitySensor != null)
+        if (proximitySensor != null)
         {
-            if(proximityDetector == null)
+            if (proximityDetector == null)
             {
                 proximityDetector = new CloseProximityDetector(this);
             }
@@ -225,24 +231,30 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     {
         Toast.makeText(this, "GOOD ANSWER FINISHED", Toast.LENGTH_SHORT).show();
 
-        try
-        {
-            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
-            transaction.commit();
-        }
-        catch (QuestionLimitReachedException e)
-        {
-            finish();
-        }
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        transaction.replace(R.id.gameFrameLayout, new RotateDeviceFragment());
+//        transaction.commit();
+
+        moveToNextQuestion = true;
+//        try
+//        {
+//            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+//            FragmentTransaction transaction = fragmentManager.beginTransaction();
+//            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
+//            transaction.commit();
+//        }
+//        catch (QuestionLimitReachedException e)
+//        {
+//            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//            finish();
+//        }
     }
 
     @Override
     public void onProximityClose()
     {
         Fragment fragment = fragmentManager.findFragmentByTag(TAG_QUESTION_FRAGMENT);
-        if(fragment != null && fragment.isVisible())
+        if (fragment != null && fragment.isVisible())
         {
             questionFragment.onClick(null);
         }
@@ -253,10 +265,25 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     {
         Fragment questionFragment = fragmentManager.findFragmentByTag(TAG_QUESTION_FRAGMENT);
 
-        if(questionFragment != null && questionFragment.isVisible()
-            && state != RotationDetector.RotationState.PERPENDICULAR)
+        if(moveToNextQuestion && state == RotationDetector.RotationState.PERPENDICULAR)
         {
-            Toast.makeText(this, "GOOD ANSWER", Toast.LENGTH_SHORT).show();
+            moveToNextQuestion = false;
+            try
+            {
+                questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
+                transaction.commit();
+            }
+            catch (QuestionLimitReachedException e)
+            {
+                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+        else if (questionFragment != null && questionFragment.isVisible()
+                && state != RotationDetector.RotationState.PERPENDICULAR)
+        {
             if (goodAnswerFragment == null)
             {
                 goodAnswerFragment = GoodAnswerFragment.newInstance(INFO_TIMEOUT);
@@ -268,8 +295,20 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         }
     }
 
-    private void ensureDevicePerpendicular()
+    @Override
+    public void onClick()
     {
-
+        try
+        {
+            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
+            transaction.commit();
+        }
+        catch (QuestionLimitReachedException e)
+        {
+            Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

@@ -52,19 +52,22 @@ public class GoodAnswerFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_good_answer, container, false);
-        new CountDownTimer(timeout, timeout)
+        if (timeout > 0)
         {
-            @Override
-            public void onTick(long millisUntilFinished)
+            new CountDownTimer(timeout, timeout)
             {
-            }
+                @Override
+                public void onTick(long millisUntilFinished)
+                {
+                }
 
-            @Override
-            public void onFinish()
-            {
-                onGoodAnswerTimeoutExceeded();
-            }
-        }.start();
+                @Override
+                public void onFinish()
+                {
+                    onGoodAnswerTimeoutExceeded();
+                }
+            }.start();
+        }
         return root;
     }
 

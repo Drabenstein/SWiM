@@ -12,7 +12,7 @@ public class RotationDetector implements SensorEventListener
     private RotationChangedListener listener;
     private RotationState previousState = RotationState.PERPENDICULAR;
 
-    public RotationDetector(@NonNull WindowManager windowManager,@NonNull RotationChangedListener listener)
+    public RotationDetector(@NonNull WindowManager windowManager, @NonNull RotationChangedListener listener)
     {
         this.windowManager = windowManager;
         this.listener = listener;
@@ -21,7 +21,7 @@ public class RotationDetector implements SensorEventListener
     @Override
     public void onSensorChanged(SensorEvent event)
     {
-        if(event.sensor.getType() == Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR)
+        if (event.sensor.getType() == Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR)
         {
             handleRotation(event.values);
         }
@@ -50,38 +50,30 @@ public class RotationDetector implements SensorEventListener
 //            [1] < 0.1
 //            [2] < 0.1
 
-        if(rotationVector[0] > 0.5f && rotationVector[0] < 0.6f && rotationVector[1] < 0.1f && rotationVector[2] > 0.75f)
+        if (rotationVector[0] > 0.4f && rotationVector[0] < 0.6f && rotationVector[1] < 0.1f && rotationVector[2] > 0.75f)
         {
-            if (previousState != RotationState.PERPENDICULAR)
-            {
-                onOrientationChanged(RotationState.PERPENDICULAR);
-                previousState = RotationState.PERPENDICULAR;
-            }
+            onOrientationChanged(RotationState.PERPENDICULAR);
         }
-        else if(rotationVector[0] < 0.1f && rotationVector[1] < 0.1f && rotationVector[2] > 0.95f)
+        else if (rotationVector[0] < 0.1f && rotationVector[1] < 0.1f && rotationVector[2] > 0.90f)
         {
-            if (previousState != RotationState.UP_TO_THE_SKY)
-            {
-                onOrientationChanged(RotationState.UP_TO_THE_SKY);
-                previousState = RotationState.UP_TO_THE_SKY;
-            }
+            onOrientationChanged(RotationState.UP_TO_THE_SKY);
         }
-        else if(rotationVector[0] < -0.95f && rotationVector[1] < 0.1f && rotationVector[2] < 0.1)
+        else if (rotationVector[0] < -0.90f && rotationVector[1] < 0.1f && rotationVector[2] < 0.1)
         {
-            if (previousState != RotationState.DOWN_TO_THE_GROUND)
-            {
-                onOrientationChanged(RotationState.DOWN_TO_THE_GROUND);
-                previousState = RotationState.DOWN_TO_THE_GROUND;
-            }
+            onOrientationChanged(RotationState.DOWN_TO_THE_GROUND);
         }
     }
 
     private void onOrientationChanged(RotationState state)
     {
-        if(listener != null)
+        if (previousState != state)
         {
-            //listener.onOrientationChanged(pitch, roll);
-            listener.onOrientationChanged(state);
+            if (listener != null)
+            {
+                listener.onOrientationChanged(state);
+            }
+
+            previousState = state;
         }
     }
 
