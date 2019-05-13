@@ -2,6 +2,7 @@ package net.mdrabek.punsgame.Models;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -52,8 +53,23 @@ public class QuestionSetManager
         return questionsAlreadyChosen.size() >= maxQuestionCount;
     }
 
+    public List<Question> getChosenQuestions()
+    {
+        List<Question> chosenQuestions = new ArrayList<>();
+
+        for (int i = 0; i < questions.size(); i++)
+        {
+            if(questionsAlreadyChosen.contains(i))
+            {
+                chosenQuestions.add(questions.get(i));
+            }
+        }
+
+        return chosenQuestions;
+    }
+
     public void clear()
     {
-        questionsAlreadyChosen.clear();
+        questionsAlreadyChosen = new HashSet<>();
     }
 }
