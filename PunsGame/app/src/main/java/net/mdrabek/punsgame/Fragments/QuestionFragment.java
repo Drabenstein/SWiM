@@ -1,6 +1,7 @@
 package net.mdrabek.punsgame.Fragments;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -55,6 +56,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null)
         {
             Question.QuestionCategory category = Question.QuestionCategory.valueOf(

@@ -1,6 +1,7 @@
 package net.mdrabek.punsgame.Fragments;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -49,6 +50,7 @@ public class TimePassedFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null)
         {
             timeout = getArguments().getInt(ARG_TIMEOUT);
