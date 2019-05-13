@@ -1,8 +1,10 @@
 package net.mdrabek.punsgame;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -43,7 +45,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
 
     public static final String ARG_RANDOM_SEED = "random-seed";
     public static final String ARG_QUESTION_COUNT = "question-count";
-    public static final String ARG_CATEGORY = "category";
+    public static final String ARG_CATEGORY = "categoryId";
 
     private FragmentManager fragmentManager;
     private Random random;
@@ -53,6 +55,8 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private CloseProximityDetector proximityDetector;
 
     private int maxQuestionCount;
+    private int goodAnswers;
+    private int categoryId;
 
     private Sensor rotationVectorSensor;
     private RotationDetector rotationDetector;
@@ -63,12 +67,14 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     private GoodAnswerFragment goodAnswerFragment;
 
     private boolean moveToNextQuestion;
+    private boolean isReplayRequested;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         QuestionRepository questionRepository = new FakeQuestionRepository();
@@ -76,8 +82,8 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         maxQuestionCount = getIntent().getIntExtra(ARG_QUESTION_COUNT, DEFAULT_MAX_QUESTIONS);
         long randomSeed = getIntent().getLongExtra(ARG_RANDOM_SEED, System.currentTimeMillis());
         random = new Random(randomSeed + System.currentTimeMillis());
-        int category = getIntent().getIntExtra(ARG_CATEGORY, random.nextInt(Question.QuestionCategory.values().length));
-        List<Question> questionList = questionRepository.getQuestionList(Question.QuestionCategory.values()[category]);
+        categoryId = getIntent().getIntExtra(ARG_CATEGORY, random.nextInt(Question.QuestionCategory.values().length));
+        List<Question> questionList = questionRepository.getQuestionList(Question.QuestionCategory.values()[categoryId]);
         questionSetManager = new QuestionSetManager(questionList, random, maxQuestionCount);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -92,10 +98,17 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         if (rotationVectorSensor != null)
         {
             rotationDetector = new RotationDetector(getWindowManager(), this);
-            registerRotationSensor();
         }
 
         fragmentManager = getSupportFragmentManager();
+
+        startGame();
+    }
+
+    private void startGame()
+    {
+        goodAnswers = 0;
+        registerRotationSensor();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.gameFrameLayout, new RotatePerpendicularFragment(), TAG_START_GAME_FRAGMENT);
         transaction.commit();
@@ -114,6 +127,17 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
 
         unregisterRotationSensor();
         super.onPause();
+    }
+
+    @Override
+    protected void onPostResume()
+    {
+        super.onPostResume();
+        if (isReplayRequested)
+        {
+            startGame();
+            isReplayRequested = false;
+        }
     }
 
     private void registerRotationSensor()
@@ -159,7 +183,6 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     @Override
     public void onQuestionSkipped(Question question)
     {
-        Toast.makeText(this, "SKIP", Toast.LENGTH_SHORT).show();
         if (giveUpFragment == null)
         {
             giveUpFragment = GiveUpFragment.newInstance(INFO_TIMEOUT);
@@ -173,7 +196,6 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     @Override
     public void onQuestionTimePassed(Question question)
     {
-        Toast.makeText(this, "TIME", Toast.LENGTH_SHORT).show();
         if (timePassedFragment == null)
         {
             timePassedFragment = TimePassedFragment.newInstance(INFO_TIMEOUT);
@@ -187,44 +209,62 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     @Override
     public void onGiveUpTimeoutExceeded()
     {
-        Toast.makeText(this, "GIVE UP FINISHED", Toast.LENGTH_SHORT).show();
-
-        try
+        if (questionSetManager.isLimitReached())
         {
-            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
-            transaction.commit();
+            goToGameSummary();
         }
-        catch (QuestionLimitReachedException e)
+        else
         {
-            finish();
+            try
+            {
+                questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
+                transaction.commit();
+            }
+            catch (QuestionLimitReachedException e)
+            {
+                finish();
+            }
         }
     }
 
     @Override
     public void onTimePassedTimeoutExceeded()
     {
-        Toast.makeText(this, "TIME PASSED FINISHED", Toast.LENGTH_SHORT).show();
-
-        try
+        if (questionSetManager.isLimitReached())
         {
-            questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
-            transaction.commit();
+            goToGameSummary();
         }
-        catch (QuestionLimitReachedException e)
+        else
         {
-            finish();
+            try
+            {
+                questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.gameFrameLayout, questionFragment, TAG_QUESTION_FRAGMENT);
+                transaction.commit();
+            }
+            catch (QuestionLimitReachedException e)
+            {
+                finish();
+            }
         }
     }
 
     @Override
     public void onGoodAnswerTimeoutExceeded()
     {
-        Toast.makeText(this, "GOOD ANSWER FINISHED", Toast.LENGTH_SHORT).show();
-        moveToNextQuestion = true;
+        goodAnswers++;
+
+        if (questionSetManager.isLimitReached())
+        {
+            goToGameSummary();
+        }
+        else
+        {
+            moveToNextQuestion = true;
+        }
     }
 
     @Override
@@ -242,9 +282,15 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
     {
         Fragment questionFragment = fragmentManager.findFragmentByTag(TAG_QUESTION_FRAGMENT);
 
-        if(moveToNextQuestion && state == RotationDetector.RotationState.PERPENDICULAR)
+        if (moveToNextQuestion && state == RotationDetector.RotationState.PERPENDICULAR)
         {
             moveToNextQuestion = false;
+
+            if (questionSetManager.isLimitReached())
+            {
+                goToGameSummary();
+            }
+
             try
             {
                 questionFragment = QuestionFragment.newInstance(questionSetManager.getNextQuestion());
@@ -258,7 +304,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
                 finish();
             }
         }
-        else if(fragmentManager.findFragmentByTag(TAG_START_GAME_FRAGMENT) != null)
+        else if (fragmentManager.findFragmentByTag(TAG_START_GAME_FRAGMENT) != null)
         {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.gameFrameLayout, CountingFragment.newInstance(START_COUNT));
@@ -292,6 +338,37 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         {
             Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             finish();
+        }
+    }
+
+    private void goToGameSummary()
+    {
+        unregisterRotationSensor();
+        final Intent gameSummaryIntent = new Intent(this, GameSummaryActivity.class);
+        gameSummaryIntent.putExtra(GameSummaryActivity.ARG_GOOD_ANSWERS, goodAnswers);
+        gameSummaryIntent.putExtra(GameSummaryActivity.ARG_TOTAL_QUESTIONS, maxQuestionCount);
+        gameSummaryIntent.putExtra(GameSummaryActivity.ARG_CATEGORY, categoryId);
+        startActivityForResult(gameSummaryIntent, GameSummaryActivity.REQ_GAME_SUMMARY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        if (requestCode == GameSummaryActivity.REQ_GAME_SUMMARY)
+        {
+            isReplayRequested = data.getBooleanExtra(GameSummaryActivity.ARG_REPLAY, false);
+            if (isReplayRequested)
+            {
+                questionSetManager.clear();
+            }
+            else
+            {
+                finish();
+            }
+        }
+        else
+        {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

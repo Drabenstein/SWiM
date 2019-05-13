@@ -2,9 +2,12 @@
     <string name="app_name">PunsGame</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="score">Wynik</string>
     <string name="rotatePerpendicularToStart">Obróć ekran, aby zacząć</string>
     <string name="timerPlaceholder">3</string>
     <string name="timePassed">Czas minął</string>
     <string name="giveUp">Pasuję</string>
     <string name="goodAnswer">Dobrze</string>
+    <string name="back">Powrót</string>
+    <string name="replay">Zagraj ponownie</string>
 </resources>

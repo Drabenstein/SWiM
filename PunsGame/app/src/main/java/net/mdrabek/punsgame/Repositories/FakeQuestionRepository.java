@@ -82,7 +82,7 @@ public class FakeQuestionRepository implements QuestionRepository
                         new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Harry Potter"),
                         new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Newton Skamander"),
                         new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Tony Stark"),
-                        new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Ania z Zielonego Wzgórza"),
+                        new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Johnny Bravo"),
                         new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Trevor Philips"),
                         new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Frank Underwood"),
                         new Question(Question.QuestionCategory.FICTION_CHARACTERS, "Vito Corleone"),
