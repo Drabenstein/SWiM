@@ -147,4 +147,12 @@ public class FakeQuestionRepository implements QuestionRepository
         ArrayList<Question> fullQuestionList = questions.values().stream().collect(ArrayList::new, List::addAll, List::addAll);
         return fullQuestionList;
     }
+
+    @Override
+    public ArrayList<Question.QuestionCategory> getCategories()
+    {
+        ArrayList<Question.QuestionCategory> categories = new ArrayList<>();
+        categories.addAll(questions.keySet());
+        return categories;
+    }
 }

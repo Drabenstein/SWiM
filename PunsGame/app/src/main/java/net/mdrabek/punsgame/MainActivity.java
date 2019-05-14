@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -18,13 +19,19 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.Toast;
 
+import net.mdrabek.punsgame.Fragments.CategoryRecyclerViewFragment;
 import net.mdrabek.punsgame.Fragments.ShakeFragment;
+import net.mdrabek.punsgame.Models.Question;
+import net.mdrabek.punsgame.Repositories.FakeQuestionRepository;
+import net.mdrabek.punsgame.Repositories.QuestionRepository;
 import net.mdrabek.punsgame.Sensors.ShakeDetector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class MainActivity extends FragmentActivity implements ShakeDetector.ShakeListener
+public class MainActivity extends FragmentActivity implements ShakeDetector.ShakeListener,
+        CategoryRecyclerViewFragment.OnFragmentInteractionListener
 {
     private static final int SHAKE_TAB_POSITION = 0;
     private static final int CATEGORIES_TAB_POSITION = 1;
@@ -154,6 +161,12 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
         }
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri)
+    {
+        Toast.makeText(this, "SUKCES", Toast.LENGTH_SHORT).show();
+    }
+
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter
     {
         private TabRequestedListener listener;
@@ -167,7 +180,15 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
             super(fm);
             fragments = new ArrayList<>();
             fragments.add(new ShakeFragment());
-            fragments.add(new ShakeFragment());
+            QuestionRepository repository = new FakeQuestionRepository();
+            List<Question.QuestionCategory> categories = repository.getCategories();
+            String[] categoriesNames = new String[categories.size()];
+            List<String> categoriesNamesList = categories.stream().map(Question.QuestionCategory::toPolishName).collect(Collectors.toList());
+            for (int i = 0; i < categoriesNamesList.size(); i++)
+            {
+                categoriesNames[i] = categoriesNamesList.get(i);
+            }
+            fragments.add(CategoryRecyclerViewFragment.newInstance(categoriesNames));
             this.listener = listener;
         }
 

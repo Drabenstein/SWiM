@@ -8,4 +8,5 @@ public interface QuestionRepository
 {
     ArrayList<Question> getQuestionList(Question.QuestionCategory category);
     ArrayList<Question> getQuestionList();
+    ArrayList<Question.QuestionCategory> getCategories();
 }
