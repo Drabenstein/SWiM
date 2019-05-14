@@ -6,6 +6,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -17,14 +19,14 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.Toast;
 
+import net.mdrabek.punsgame.Fragments.GoodAnswerFragment;
 import net.mdrabek.punsgame.Fragments.ShakeFragment;
 import net.mdrabek.punsgame.Sensors.ShakeDetector;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements ShakeDetector.ShakeListener,
-        TabRequestedListener
+public class MainActivity extends FragmentActivity implements ShakeDetector.ShakeListener
 {
     private static final int SHAKE_TAB_POSITION = 0;
     private static final int CATEGORIES_TAB_POSITION = 1;
@@ -49,14 +51,16 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
         registerShakeDetector();
 
         viewPager = findViewById(R.id.viewpager);
-        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), this);
-        ScreenSlidePagerAdapter screenSlidePagerAdapter = (ScreenSlidePagerAdapter)pagerAdapter;
-        screenSlidePagerAdapter.addTabFragment(new ShakeFragment());
+        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), null);
         viewPager.setAdapter(pagerAdapter);
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void registerShakeDetector()
     {
+
+
         if (linearAccelerometer != null)
         {
             if (sensorManager == null)
@@ -111,7 +115,7 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
     @Override
     public void onShake(int shakeCount, float acceleration)
     {
-        Toast.makeText(this, "SHAKE no. " + shakeCount + " - " + acceleration, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "SHAKE" + acceleration, Toast.LENGTH_SHORT).show();
         if (shakeCount < 3)
         {
             questionRandomSeed *= (long) shakeCount * 1000;
@@ -155,35 +159,27 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
         }
     }
 
-    @Override
-    public void onTabRequested(int position)
-    {
-        if(position == SHAKE_TAB_POSITION)
-        {
-            registerShakeDetector();
-        }
-        else
-        {
-            unregisterShakeDetector();
-        }
-    }
-
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter
     {
-        private List<Fragment> fragments;
         private TabRequestedListener listener;
+        private List<Fragment> fragments;
+        private final String[] tabTitles = new String[] {
+                "Losowa gra", "Kategorie"
+        };
 
-        public ScreenSlidePagerAdapter(FragmentManager fm, TabRequestedListener listener) {
+        public ScreenSlidePagerAdapter(FragmentManager fm, TabRequestedListener listener)
+        {
             super(fm);
             fragments = new ArrayList<>();
+            fragments.add(new ShakeFragment());
+            fragments.add(new ShakeFragment());
             this.listener = listener;
         }
 
         @Override
-        public Fragment getItem(int position) {
-            position %= fragments.size();
-
-            if(listener != null)
+        public Fragment getItem(int position)
+        {
+            if (listener != null)
             {
                 listener.onTabRequested(position);
             }
@@ -191,14 +187,17 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
             return fragments.get(position);
         }
 
-        public void addTabFragment(@NonNull Fragment fragment)
+        @Override
+        public int getCount()
         {
-            fragments.add(fragment);
+            return fragments.size();
         }
 
+        @Nullable
         @Override
-        public int getCount() {
-            return fragments.size();
+        public CharSequence getPageTitle(int position)
+        {
+            return tabTitles[position];
         }
     }
 }
