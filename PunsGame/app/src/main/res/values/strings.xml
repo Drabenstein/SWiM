@@ -11,4 +11,7 @@
     <string name="back">Powrót</string>
     <string name="replay">Zagraj ponownie</string>
     <string name="shakeToStart">Potrząśnij, aby zagrać w losową kategorię</string>
+
+    <string name="tab_a_label">Losowa gra</string>
+    <string name="tab_b_label">Kategorie</string>
 </resources>

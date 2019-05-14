@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,6 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.Toast;
 
-import net.mdrabek.punsgame.Fragments.GoodAnswerFragment;
 import net.mdrabek.punsgame.Fragments.ShakeFragment;
 import net.mdrabek.punsgame.Sensors.ShakeDetector;
 
@@ -59,8 +57,6 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
 
     private void registerShakeDetector()
     {
-
-
         if (linearAccelerometer != null)
         {
             if (sensorManager == null)
@@ -115,7 +111,6 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
     @Override
     public void onShake(int shakeCount, float acceleration)
     {
-        Toast.makeText(this, "SHAKE" + acceleration, Toast.LENGTH_SHORT).show();
         if (shakeCount < 3)
         {
             questionRandomSeed *= (long) shakeCount * 1000;
