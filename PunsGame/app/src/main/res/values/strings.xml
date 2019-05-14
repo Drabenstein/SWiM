@@ -10,4 +10,5 @@
     <string name="goodAnswer">Dobrze</string>
     <string name="back">Powrót</string>
     <string name="replay">Zagraj ponownie</string>
+    <string name="shakeToStart">Potrząśnij, aby zagrać w losową kategorię</string>
 </resources>
