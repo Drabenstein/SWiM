@@ -97,8 +97,14 @@
         <item name="android:background">#1565c0</item>
     </style>
 
-    <style name="test">
-        <item name="android:background">@color/white</item>
+    <style name="CategoryItemStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/amita_bold</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">#ffd54f</item>
     </style>
 
 </resources>

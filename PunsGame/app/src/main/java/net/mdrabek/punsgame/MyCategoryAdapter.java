@@ -1,6 +1,7 @@
 package net.mdrabek.punsgame;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,8 @@ import android.widget.TextView;
 
 public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.MyViewHolder>
 {
-    private String[] mDataset;
+    private String[] dataset;
+    private Context context;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -29,7 +31,7 @@ public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.My
     // Provide a suitable constructor (depends on the kind of dataset)
     public MyCategoryAdapter(String[] myDataset)
     {
-        mDataset = myDataset;
+        dataset = myDataset;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.My
         View root = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.category_list_item, parent, false);
 
+        context = root.getContext();
         TextView v = root.findViewById(R.id.categoryTitleTextView);
 
         MyViewHolder vh = new MyViewHolder(v);
@@ -47,12 +50,15 @@ public class MyCategoryAdapter extends RecyclerView.Adapter<MyCategoryAdapter.My
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position)
     {
-        holder.textView.setText(mDataset[position]);
+        holder.textView.setText(dataset[position]);
+        holder.textView.setBackgroundColor(
+                ContextCompat.getColor(context,
+                        position % 2 == 0 ? R.color.firstStripe : R.color.secondStripe));
     }
 
     @Override
     public int getItemCount()
     {
-        return mDataset.length;
+        return dataset.length;
     }
 }
