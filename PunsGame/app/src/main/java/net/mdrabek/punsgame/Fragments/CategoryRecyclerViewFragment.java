@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,12 +18,14 @@ import net.mdrabek.punsgame.R;
 public class CategoryRecyclerViewFragment extends Fragment
 {
     private static final String ARG_CATEGORIES = "categories";
+    private static final String ARG_CATEGORIES_IMAGE_IDS = "categories-image-ids";
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     private String[] myDataset;
+    private int[] categoriesImagesId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -30,11 +33,12 @@ public class CategoryRecyclerViewFragment extends Fragment
     {
     }
 
-    public static CategoryRecyclerViewFragment newInstance(@NonNull String[] categories)
+    public static CategoryRecyclerViewFragment newInstance(@NonNull String[] categories, @NonNull int[] categoryImageIds)
     {
         CategoryRecyclerViewFragment fragment = new CategoryRecyclerViewFragment();
         Bundle args = new Bundle();
         args.putStringArray(ARG_CATEGORIES, categories);
+        args.putIntArray(ARG_CATEGORIES_IMAGE_IDS, categoryImageIds);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,10 +50,12 @@ public class CategoryRecyclerViewFragment extends Fragment
         if(getArguments() != null)
         {
             myDataset = getArguments().getStringArray(ARG_CATEGORIES);
+            categoriesImagesId = getArguments().getIntArray(ARG_CATEGORIES_IMAGE_IDS);
         }
         else
         {
             myDataset = new String[1];
+            categoriesImagesId = new int[1];
         }
     }
 
@@ -63,7 +69,7 @@ public class CategoryRecyclerViewFragment extends Fragment
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(root.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new MyCategoryAdapter(myDataset);
+        mAdapter = new MyCategoryAdapter(myDataset, categoriesImagesId);
         recyclerView.setAdapter(mAdapter);
 
         return root;

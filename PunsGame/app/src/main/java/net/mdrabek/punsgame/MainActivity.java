@@ -171,7 +171,7 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
     {
         private TabRequestedListener listener;
         private List<Fragment> fragments;
-        private final String[] tabTitles = new String[] {
+        private final String[] tabTitles = new String[]{
                 "Losowa gra", "Kategorie"
         };
 
@@ -188,7 +188,14 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
             {
                 categoriesNames[i] = categoriesNamesList.get(i);
             }
-            fragments.add(CategoryRecyclerViewFragment.newInstance(categoriesNames));
+            int[] categoriesImagesIds =
+                    {
+                            R.drawable.food_category_image,
+                            R.drawable.animals_category_image,
+                            R.drawable.fiction_characters_category_image,
+                            R.drawable.adages_category_image
+                    };
+            //fragments.add(CategoryRecyclerViewFragment.newInstance(categoriesNames, categoriesImagesIds));
             this.listener = listener;
         }
 
