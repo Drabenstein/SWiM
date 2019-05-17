@@ -94,10 +94,10 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
             sensorManager.registerListener(proximityDetector, proximitySensor, SensorManager.SENSOR_DELAY_UI);
         }
 
-        rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
+        rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         if (rotationVectorSensor != null)
         {
-            rotationDetector = new RotationDetector(getWindowManager(), this);
+            rotationDetector = new RotationDetector(this);
         }
 
         fragmentManager = getSupportFragmentManager();
@@ -146,7 +146,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
         {
             if (rotationDetector == null)
             {
-                rotationDetector = new RotationDetector(getWindowManager(), this);
+                rotationDetector = new RotationDetector(this);
             }
 
             sensorManager.registerListener(rotationDetector, rotationVectorSensor, ROTATION_SAMPLING_RATE, ROTATION_MAX_LATENCY);
@@ -304,7 +304,7 @@ public class GameActivity extends AppCompatActivity implements QuestionFragment.
                 finish();
             }
         }
-        else if (fragmentManager.findFragmentByTag(TAG_START_GAME_FRAGMENT) != null)
+        else if (fragmentManager.findFragmentByTag(TAG_START_GAME_FRAGMENT) != null && state == RotationDetector.RotationState.PERPENDICULAR)
         {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.gameFrameLayout, CountingFragment.newInstance(START_COUNT));
