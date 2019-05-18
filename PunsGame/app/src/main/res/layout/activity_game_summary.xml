@@ -7,78 +7,77 @@
     tools:context=".GameSummaryActivity"
     style="@style/GameSummaryTheme">
 
-    <ImageView
-        android:id="@+id/categoryImageView"
-        android:scaleType="fitXY"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.35"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/categoryNameTextView"
-        style="@style/GameSummaryTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/amita_bold"
-        android:text="@string/score"
-        android:textSize="40dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryImageView"
-        />
-
     <TextView
         android:id="@+id/scoreTextView"
-        style="@style/GameSummaryTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/amita_bold"
-        android:text="2/10"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/score"
+        app:layout_constraintBottom_toTopOf="@+id/actualScoreTextView"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryNameTextView"
-        />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.492" />
+
+    <TextView
+        android:id="@+id/actualScoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="144dp"
+        android:fontFamily="@font/segoe_print"
+        android:layout_marginTop="20dp"
+        android:text="0/10"
+        android:textSize="40dp"
+        app:layout_constraintTop_toBottomOf="@id/scoreTextView"
+        app:layout_constraintBottom_toTopOf="@+id/playAgainTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/playAgainTextView"
+        android:layout_width="335dp"
+        android:layout_height="26dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/play_again"
+        app:layout_constraintBottom_toTopOf="@id/decisionButtonsConstraintLayout"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/buttonSectionConstraintLayout"
+        android:id="@+id/decisionButtonsConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.2"
-        android:layout_marginBottom="5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <Button
-            android:id="@+id/backButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.7"
-            android:drawableLeft="@drawable/ic_arrow_back_dark"
-            android:text="@string/back"
-            android:textSize="20dp"
+            android:id="@+id/playAgainButton"
+            android:layout_width="61.49dp"
+            android:layout_height="61.49dp"
+            android:background="@drawable/yes"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/restartButton"
-            app:layout_constraintWidth_percent="0.5" />
+            app:layout_constraintRight_toLeftOf="@id/backToHomeButton"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="634dp" />
 
         <Button
-            android:id="@+id/restartButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.7"
-            android:drawableLeft="@drawable/ic_autorenew_dark"
-            android:text="@string/replay"
-            android:textSize="20dp"
+            android:id="@+id/backToHomeButton"
+            android:layout_width="61.49dp"
+            android:layout_height="61.49dp"
+            android:background="@drawable/no"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/backButton"
+            app:layout_constraintLeft_toRightOf="@id/playAgainButton"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintWidth_percent="0.5" />
-
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="213dp"
+            tools:layout_editor_absoluteY="634dp" />
     </android.support.constraint.ConstraintLayout>
-
 </android.support.constraint.ConstraintLayout>

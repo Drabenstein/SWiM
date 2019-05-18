@@ -5,12 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-
-import net.mdrabek.punsgame.Models.Question;
 
 public class GameSummaryActivity extends AppCompatActivity
 {
@@ -35,32 +30,11 @@ public class GameSummaryActivity extends AppCompatActivity
         goodAnswers = getIntent().getIntExtra(ARG_GOOD_ANSWERS, 0);
         categoryId = getIntent().getIntExtra(ARG_CATEGORY, 0);
 
-        ImageView categoryImageView = findViewById(R.id.categoryImageView);
-
-        switch (Question.QuestionCategory.values()[categoryId])
-        {
-            case FOOD:
-                Glide.with(this).load(R.drawable.food_category_image).into(categoryImageView);
-                break;
-            case ANIMALS:
-                Glide.with(this).load(R.drawable.animals_category_image).into(categoryImageView);
-                break;
-            case FICTION_CHARACTERS:
-                Glide.with(this).load(R.drawable.fiction_characters_category_image).into(categoryImageView);
-                break;
-            case ADAGES:
-                Glide.with(this).load(R.drawable.adages_category_image).into(categoryImageView);
-                break;
-        }
-
-        TextView categoryTV = findViewById(R.id.categoryNameTextView);
-        categoryTV.setText(Question.QuestionCategory.toPolishName(Question.QuestionCategory.values()[categoryId]));
-
-        TextView scoreTV = findViewById(R.id.scoreTextView);
+        TextView scoreTV = findViewById(R.id.actualScoreTextView);
         scoreTV.setText(goodAnswers + "/" + totalQuestions);
 
-        findViewById(R.id.backButton).setOnClickListener(this::onBackButtonClicked);
-        findViewById(R.id.restartButton).setOnClickListener(this::onRestartButtonClicked);
+        findViewById(R.id.backToHomeButton).setOnClickListener(this::onBackButtonClicked);
+        findViewById(R.id.playAgainButton).setOnClickListener(this::onRestartButtonClicked);
     }
 
     public void onBackButtonClicked(View view)
