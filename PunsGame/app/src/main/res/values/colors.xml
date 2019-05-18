@@ -9,6 +9,8 @@
     <color name="green">#00dd00</color>
     <color name="black">#000000</color>
 
+    <color name="blueBg">#053C66</color>
+
     <color name="firstStripe">#eceff1</color>
     <color name="secondStripe">#fafafa</color>
 </resources>
