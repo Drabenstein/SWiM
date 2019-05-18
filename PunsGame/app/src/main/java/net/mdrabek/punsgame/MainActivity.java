@@ -9,11 +9,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MainActivity extends FragmentActivity implements ShakeDetector.ShakeListener,
+public class MainActivity extends AppCompatActivity implements ShakeDetector.ShakeListener,
         CategoryRecyclerViewFragment.OnFragmentInteractionListener
 {
     private static final int SHAKE_TAB_POSITION = 0;
@@ -55,11 +55,11 @@ public class MainActivity extends FragmentActivity implements ShakeDetector.Shak
         shakeDetector = new ShakeDetector(this);
         registerShakeDetector();
 
-        viewPager = findViewById(R.id.viewpager);
-        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), null);
-        viewPager.setAdapter(pagerAdapter);
-        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+//        viewPager = findViewById(R.id.pager);
+//        pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), null);
+//        viewPager.setAdapter(pagerAdapter);
+//        TabLayout tabLayout = findViewById(R.id.tabs);
+//        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void registerShakeDetector()
