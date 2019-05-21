@@ -14,7 +14,7 @@ public class Question
         private static final String FoodPL = "Jedzenie";
         private static final String AnimalsPL = "Zwierzęta";
         private static final String FictionCharactersPL = "Postacie fikcyjne";
-        private static final String AdagesPL = "Przysłowia";
+        private static final String AdagesPL = "Powiedzenia";
 
         public static String toPolishName(QuestionCategory category)
         {

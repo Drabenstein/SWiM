@@ -114,10 +114,10 @@ public class FakeQuestionRepository implements QuestionRepository
                         new Question(Question.QuestionCategory.ADAGES, "Kto pierwszy ten lepszy"),
                         new Question(Question.QuestionCategory.ADAGES, "Z deszczu pod rynnę"),
                         new Question(Question.QuestionCategory.ADAGES, "Pod latarnią najciemniej"),
-                        new Question(Question.QuestionCategory.ADAGES, "Jedna jaskółka wiosny nie czyni"),
+                        new Question(Question.QuestionCategory.ADAGES, "Pyrrusowe zwycięstwo"),
                         new Question(Question.QuestionCategory.ADAGES, "Strach ma wielkie oczy"),
                         new Question(Question.QuestionCategory.ADAGES, "Nieszczęścia chodzą parami"),
-                        new Question(Question.QuestionCategory.ADAGES, "Ni z gruszki, ni z pietruszki"),
+                        new Question(Question.QuestionCategory.ADAGES, "Syzyfowa praca"),
                         new Question(Question.QuestionCategory.ADAGES, "Nadzieja matką głupich"),
                         new Question(Question.QuestionCategory.ADAGES, "Głodnemu chleb na myśli"),
                         new Question(Question.QuestionCategory.ADAGES, "Kłamstwo ma krótkie nogi"),
@@ -125,7 +125,7 @@ public class FakeQuestionRepository implements QuestionRepository
                         new Question(Question.QuestionCategory.ADAGES, "Dać komuś kosza"),
                         new Question(Question.QuestionCategory.ADAGES, "Grać w otwarte karty"),
                         new Question(Question.QuestionCategory.ADAGES, "Pięta Achillesowa"),
-                        new Question(Question.QuestionCategory.ADAGES, "Woda sodowa uderza do głowy"),
+                        new Question(Question.QuestionCategory.ADAGES, "Koń trojański"),
                         new Question(Question.QuestionCategory.ADAGES, "Gruszki na wierzbie")
                 };
 
