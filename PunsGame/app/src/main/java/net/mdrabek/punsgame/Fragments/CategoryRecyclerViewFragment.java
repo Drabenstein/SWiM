@@ -86,7 +86,7 @@ public class CategoryRecyclerViewFragment extends Fragment
         else
         {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement TipsSkippedListener");
         }
     }
 

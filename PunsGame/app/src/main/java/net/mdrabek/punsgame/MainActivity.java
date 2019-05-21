@@ -6,17 +6,25 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import net.mdrabek.punsgame.Fragments.CategoryRecyclerViewFragment;
+import net.mdrabek.punsgame.Fragments.TipFragment;
 import net.mdrabek.punsgame.Sensors.ShakeDetector;
 
 public class MainActivity extends AppCompatActivity implements ShakeDetector.ShakeListener,
-        CategoryRecyclerViewFragment.OnFragmentInteractionListener
+        CategoryRecyclerViewFragment.OnFragmentInteractionListener, TipFragment.TipsSkippedListener
 {
     public static final int START_GAME_REQ = 31231;
 
@@ -25,11 +33,42 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Sha
     private ShakeDetector shakeDetector;
     private long questionRandomSeed;
 
+    private ViewFlipper viewFlipper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final Fragment[] tips = new Fragment[]
+                {
+                  TipFragment.newInstance(R.drawable.tip1, R.drawable.pagination1),
+                        TipFragment.newInstance(R.drawable.tip2, R.drawable.pagination2),
+                        TipFragment.newInstance(R.drawable.tip3, R.drawable.pagination3),
+                        TipFragment.newInstance(R.drawable.tip4, R.drawable.pagination4)
+                };
+
+
+        FragmentManager manager = getSupportFragmentManager();
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(new FragmentPagerAdapter(manager)
+        {
+            @Override
+            public Fragment getItem(int i)
+            {
+                return tips[i];
+            }
+
+            @Override
+            public int getCount()
+            {
+                return tips.length;
+            }
+        });
+
+        viewFlipper = findViewById(R.id.viewFlipper);
+
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         linearAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         shakeDetector = new ShakeDetector(this);
@@ -126,5 +165,11 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Sha
     public void onFragmentInteraction(Uri uri)
     {
         Toast.makeText(this, "SUKCES", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTipsSkipped()
+    {
+        viewFlipper.showNext();
     }
 }
