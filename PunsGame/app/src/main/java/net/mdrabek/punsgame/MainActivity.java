@@ -9,22 +9,19 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import net.mdrabek.punsgame.Fragments.CategoryRecyclerViewFragment;
 import net.mdrabek.punsgame.Fragments.TipFragment;
 import net.mdrabek.punsgame.Sensors.ShakeDetector;
 
 public class MainActivity extends AppCompatActivity implements ShakeDetector.ShakeListener,
-        CategoryRecyclerViewFragment.OnFragmentInteractionListener, TipFragment.TipsSkippedListener
+        TipFragment.TipsSkippedListener
 {
     public static final int START_GAME_REQ = 31231;
 
@@ -159,12 +156,6 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Sha
                 Toast.makeText(this, "KONIEC GRY", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri)
-    {
-        Toast.makeText(this, "SUKCES", Toast.LENGTH_SHORT).show();
     }
 
     @Override

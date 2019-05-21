@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">PunsGame</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="score">Wynik</string>
     <string name="rotatePerpendicularToStart">Obróć ekran, aby zacząć</string>
@@ -11,7 +10,4 @@
     <string name="back">Powrót</string>
     <string name="replay">Zagraj ponownie</string>
     <string name="shakeToStart">Potrząśnij, aby zagrać w losową kategorię</string>
-
-    <string name="tab_a_label">Losowa gra</string>
-    <string name="tab_b_label">Kategorie</string>
 </resources>
