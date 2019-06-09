@@ -1,11 +1,14 @@
 package net.mdrabek.zadanie6;
 
 import android.media.AudioRecord;
+import android.util.Log;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class AudioGrabbingTask implements Runnable
 {
+    private final byte SILENCE_TRESHOLD = 80;
+
     private int bufferSize;
     private AudioRecord audioRecord;
     private LinkedBlockingQueue<byte[]> bufferQueue;
@@ -29,7 +32,8 @@ public class AudioGrabbingTask implements Runnable
                 try
                 {
                     byte[] block = getNextBlock();
-                    if (block != null)
+                    Log.w(AudioGrabbingTask.class.getSimpleName(), Byte.toString(maxElement(block)));
+                    if (block != null && !isSilenceMoment(block))
                     {
                         bufferQueue.put(block);
                     }
@@ -59,7 +63,7 @@ public class AudioGrabbingTask implements Runnable
         isStopRequested = true;
     }
 
-    byte[] getNextBlock()
+    private byte[] getNextBlock()
     {
         byte[] buffer = new byte[bufferSize];
         int returnCode = audioRecord.read(buffer, 0, buffer.length);
@@ -73,13 +77,18 @@ public class AudioGrabbingTask implements Runnable
         }
     }
 
+    private boolean isSilenceMoment(byte[] block)
+    {
+        return maxElement(block) < SILENCE_TRESHOLD;
+    }
+
     public GrabberState getState()
     {
-        if(isStopRequested)
+        if (isStopRequested)
         {
             return GrabberState.STOPPED;
         }
-        else if(isPauseRequested)
+        else if (isPauseRequested)
         {
             return GrabberState.PAUSED;
         }
@@ -94,6 +103,21 @@ public class AudioGrabbingTask implements Runnable
         RUNNING,
         PAUSED,
         STOPPED
+    }
+
+    private byte maxElement(byte[] block)
+    {
+        byte max = Byte.MIN_VALUE;
+
+        for (byte elem : block)
+        {
+            if(max < elem)
+            {
+                max = elem;
+            }
+        }
+
+        return max;
     }
 }
 

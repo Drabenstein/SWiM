@@ -37,34 +37,37 @@ public class AudioProcessingTask implements Runnable
 
         }
 
-        byte[] header = prepareWavHeader(linkedBlockingQueue.size() * linkedBlockingQueue.peek().length);
+        if (linkedBlockingQueue.size() > 0)
+        {
+            byte[] header = prepareWavHeader(linkedBlockingQueue.size() * linkedBlockingQueue.peek().length);
 
-        try
-        {
-            File f = new File(fileName);
-            if (!f.exists())
+            try
             {
-                f.createNewFile();
-            }
+                File f = new File(fileName);
+                if (!f.exists())
+                {
+                    f.createNewFile();
+                }
 
-            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(fileName));
-            outputStream.write(header);
-            while (!linkedBlockingQueue.isEmpty())
-            {
-                outputStream.write(linkedBlockingQueue.take());
+                BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(fileName));
+                outputStream.write(header);
+                while (!linkedBlockingQueue.isEmpty())
+                {
+                    outputStream.write(linkedBlockingQueue.take());
+                }
             }
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 

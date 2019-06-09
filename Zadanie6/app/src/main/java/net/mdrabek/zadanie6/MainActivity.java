@@ -24,11 +24,9 @@ public class MainActivity extends AppCompatActivity
     private final int MILLIS_IN_MINUTE = 60000;
     private final int MILLIS_IN_SECOND = 1000;
 
-    final int MIN_BUFFER_SIZE_ALLOWING_16_HZ_ANALYSIS = (5500 * 4);
     private final int SAMPLE_RATE = 44100;
     private final int BUFFER_SIZE = 8192;
 
-    private int bufferSize;
     private AudioRecord audioRecord;
     private AudioGrabbingTask audioGrabbingTask;
     private AudioProcessingTask audioProcessingTask;
@@ -47,21 +45,7 @@ public class MainActivity extends AppCompatActivity
             requestPermission();
         }
 
-//        if (this.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
-//        {
-//            this.requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, 1);
-//        }
-
         int minPossibleBuffSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT);
-
-        if (minPossibleBuffSize > MIN_BUFFER_SIZE_ALLOWING_16_HZ_ANALYSIS)
-        {
-            bufferSize = minPossibleBuffSize;
-        }
-        else
-        {
-            bufferSize = MIN_BUFFER_SIZE_ALLOWING_16_HZ_ANALYSIS;
-        }
 
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE);
@@ -165,7 +149,7 @@ public class MainActivity extends AppCompatActivity
 
     public void onListRecordingsButtonClicked(View view)
     {
-
+        //TODO: Implement recording management
     }
 
     private String getAbsolutePathForNewFile(String filename)
