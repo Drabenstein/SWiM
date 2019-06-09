@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Zadanie6</string>
+    <string name="start_rec">Nagrywaj</string>
+    <string name="pause_rec">Pauza</string>
+    <string name="save_to_file">Zapisz nagranie</string>
+    <string name="list_recordings">Lista nagrań</string>
+    <string name="timerPlaceholder">00:00:00</string>
+</resources>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/countingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timerPlaceholder"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/startRecordingButton"/>
+
+    <Button
+        android:id="@+id/startRecordingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_rec"
+        app:layout_constraintTop_toBottomOf="@id/countingTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pauseRecordingButton"
+        android:onClick="onStartRecordingButtonClicked"/>
+
+    <Button
+        android:id="@+id/pauseRecordingButton"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pause_rec"
+        app:layout_constraintTop_toBottomOf="@id/startRecordingButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/saveRecToFileButton"
+        android:onClick="onPauseRecordingButtonClicked"/>
+
+    <Button
+        android:id="@+id/saveRecToFileButton"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_to_file"
+        app:layout_constraintTop_toBottomOf="@id/pauseRecordingButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/listRecordingsButton"
+        android:onClick="onSaveRecordingRecordingButtonClicked"/>
+
+    <Button
+        android:id="@+id/listRecordingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/list_recordings"
+        app:layout_constraintTop_toBottomOf="@id/saveRecToFileButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:onClick="onListRecordingsButtonClicked"/>
+    
+</android.support.constraint.ConstraintLayout>
