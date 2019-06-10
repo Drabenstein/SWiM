@@ -1,9 +1,12 @@
 package net.mdrabek.zadanie6;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -12,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -104,6 +108,9 @@ public class RecordListingActivity extends Activity implements AdapterView.OnIte
                     case R.id.deleteMenuItem:
                         deleteSelectedRecordings();
                         break;
+                    case R.id.renameMenuItem:
+                        renameRecording();
+                        break;
                 }
 
                 mode.finish();
@@ -117,6 +124,32 @@ public class RecordListingActivity extends Activity implements AdapterView.OnIte
                 recordsListView.setItemChecked(-1, true);
             }
         };
+    }
+
+    private void renameRecording()
+    {
+        SparseBooleanArray checkedItems = recordsListView.getCheckedItemPositions();
+
+        if(checkedItems.size() > 0)
+        {
+            final int selectedRecordingIndex = checkedItems.keyAt(0);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Podaj nową nazwę");
+            final EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+            builder.setPositiveButton("Potwierdź", (dialog, which) ->
+            {
+                String newFilename = input.getText().toString();
+                File recording = recordings.get(selectedRecordingIndex);
+                File destFile = new File(recording.getParent(), newFilename  + ".wav");
+                recording.renameTo(destFile);
+                recordingNames.set(selectedRecordingIndex, newFilename);
+                adapter.notifyDataSetChanged();
+            });
+            builder.setNegativeButton("Anuluj", (dialog, which) -> dialog.cancel());
+            builder.show();
+        }
     }
 
     private void deleteSelectedRecordings()

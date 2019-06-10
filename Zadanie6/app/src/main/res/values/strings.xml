@@ -6,4 +6,5 @@
     <string name="list_recordings">Lista nagrań</string>
     <string name="timer_placeholder">00:00:00</string>
     <string name="delete_recording">Skasuj</string>
+    <string name="rename_recording">Zmień nazwę</string>
 </resources>
