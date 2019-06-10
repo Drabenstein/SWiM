@@ -9,7 +9,12 @@
     </style>
 
     <style name="ListActivityTheme" parent="android:Theme.Holo">
+    </style>
 
+    <style name="MainScreen">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">60dp</item>
+        <item name="android:padding">2dip</item>
     </style>
 
 </resources>

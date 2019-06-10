@@ -7,9 +7,13 @@
     tools:context=".MainActivity">
 
     <TextView
+        style="@style/MainScreen"
+        android:layout_margin="10dp"
         android:id="@+id/countingTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        app:layout_constraintHeight_percent="0.2"
         android:text="@string/timer_placeholder"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,7 +22,7 @@
 
     <Button
         android:id="@+id/startRecordingButton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/start_rec"
         app:layout_constraintTop_toBottomOf="@id/countingTextView"
@@ -30,7 +34,7 @@
     <Button
         android:id="@+id/pauseRecordingButton"
         android:enabled="false"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/pause_rec"
         app:layout_constraintTop_toBottomOf="@id/startRecordingButton"
@@ -42,7 +46,7 @@
     <Button
         android:id="@+id/saveRecToFileButton"
         android:enabled="false"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/save_to_file"
         app:layout_constraintTop_toBottomOf="@id/pauseRecordingButton"
@@ -53,7 +57,7 @@
 
     <Button
         android:id="@+id/listRecordingsButton"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/list_recordings"
         app:layout_constraintTop_toBottomOf="@id/saveRecToFileButton"
