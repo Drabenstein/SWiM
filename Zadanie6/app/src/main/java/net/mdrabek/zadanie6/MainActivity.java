@@ -11,8 +11,8 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -146,7 +146,7 @@ public class MainActivity extends Activity
         audioRecord = null;
         findViewById(R.id.startRecordingButton).setEnabled(true);
         TextView countingTextView = findViewById(R.id.countingTextView);
-        countingTextView.setText(R.string.timerPlaceholder);
+        countingTextView.setText(R.string.timer_placeholder);
     }
 
     public void onListRecordingsButtonClicked(View view)

@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ListActivityTheme" parent="android:style/Theme.Holo">
+    <style name="ListActivityTheme" parent="android:Theme.Holo">
 
     </style>
 
