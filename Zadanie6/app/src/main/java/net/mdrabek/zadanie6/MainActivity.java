@@ -17,6 +17,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainActivity extends Activity
@@ -75,7 +78,9 @@ public class MainActivity extends Activity
         {
             buffer = new LinkedBlockingQueue<>();
             audioGrabbingTask = new AudioGrabbingTask(BUFFER_SIZE, audioRecord, buffer);
-            String fileName = getAbsolutePathForNewFile("audio-" + System.currentTimeMillis() + ".wav");
+            Date now = Calendar.getInstance().getTime();
+            String fileName = getAbsolutePathForNewFile("audio-" + now.getHours()
+                    + "-" + now.getMinutes() + "-" + now.getSeconds()+ ".wav");
             audioProcessingTask = new AudioProcessingTask(fileName, buffer);
             audioRecord.startRecording();
             new Thread(audioGrabbingTask).start();
