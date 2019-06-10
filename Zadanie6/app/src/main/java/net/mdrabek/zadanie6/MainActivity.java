@@ -1,6 +1,8 @@
 package net.mdrabek.zadanie6;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -17,7 +19,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends Activity
 {
     private static final int REQUEST_PERMISSION_CODE = 1000;
     private final int MILLIS_IN_HOUR = 3600000;
@@ -44,8 +46,6 @@ public class MainActivity extends AppCompatActivity
         {
             requestPermission();
         }
-
-        int minPossibleBuffSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_FLOAT);
 
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, BUFFER_SIZE);
@@ -145,11 +145,14 @@ public class MainActivity extends AppCompatActivity
         }
         audioRecord = null;
         findViewById(R.id.startRecordingButton).setEnabled(true);
+        TextView countingTextView = findViewById(R.id.countingTextView);
+        countingTextView.setText(R.string.timerPlaceholder);
     }
 
     public void onListRecordingsButtonClicked(View view)
     {
-        //TODO: Implement recording management
+        final Intent recordListingIntent = new Intent(this, RecordListingActivity.class);
+        startActivity(recordListingIntent);
     }
 
     private String getAbsolutePathForNewFile(String filename)
