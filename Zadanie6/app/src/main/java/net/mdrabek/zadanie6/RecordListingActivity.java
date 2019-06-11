@@ -159,8 +159,12 @@ public class RecordListingActivity extends Activity implements AdapterView.OnIte
         for(int i = 0; i < checkedItems.size(); i++)
         {
             recordings.get(checkedItems.keyAt(i)).delete();
-            recordings.remove(checkedItems.keyAt(i));
-            recordingNames.remove(checkedItems.keyAt(i));
+        }
+
+        for(int i = 0; i < checkedItems.size(); i++)
+        {
+            recordings.remove(checkedItems.keyAt(i) - i * 1);
+            recordingNames.remove(checkedItems.keyAt(i) - i * 1);
         }
 
         ArrayAdapter<String> adapter = (ArrayAdapter<String>)recordsListView.getAdapter();
