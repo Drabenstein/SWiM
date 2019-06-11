@@ -1,7 +1,5 @@
 package net.mdrabek.zadanie6;
 
-import android.media.AudioRecord;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;

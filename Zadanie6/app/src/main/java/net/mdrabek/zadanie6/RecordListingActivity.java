@@ -2,12 +2,10 @@ package net.mdrabek.zadanie6;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -25,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static android.view.ActionMode.TYPE_FLOATING;
 import static android.view.ActionMode.TYPE_PRIMARY;
 
 public class RecordListingActivity extends Activity implements AdapterView.OnItemClickListener
